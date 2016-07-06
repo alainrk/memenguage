@@ -2,6 +2,7 @@ package alaindc.memenguage;
 
 import android.app.Dialog;
 import android.app.FragmentManager;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,11 +13,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.ListViewAutoScrollHelper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,7 +109,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void bindView(View v, Context arg1, Cursor crs)
             {
-                int color = (crs.getPosition() % 2 == 0) ? Color.argb(50,178,245,242) : Color.WHITE;
+//                int color = (crs.getPosition() % 2 == 0) ? Color.argb(50,178,245,242) : Color.WHITE;
+                int color = (crs.getPosition() % 2 == 0) ? Color.argb(50,255,202,40) : Color.WHITE;
                 v.setBackgroundColor(color);
                 String ita = crs.getString(crs.getColumnIndex(Constants.FIELD_ITA));
                 String eng = crs.getString(crs.getColumnIndex(Constants.FIELD_ENG));
@@ -162,8 +166,27 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.main, menu);
+        // Retrieve the SearchView and plug it into SearchManager
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d("MainActivity Search", query.toString());
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("MainActivity Search", newText.toString());
+
+                return false;
+            }
+        });
         return true;
     }
 
@@ -179,6 +202,8 @@ public class MainActivity extends AppCompatActivity
             Intent settingsActivity = new Intent(this, SettingsActivity.class);
             startActivity(settingsActivity);
             return true;
+        } else if (id == R.id.action_search) {
+            Log.d("MainActivity Search", item.toString());
         }
 
         return super.onOptionsItemSelected(item);
@@ -190,18 +215,11 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_home) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_settings) {
+            Intent settingsActivity = new Intent(this, SettingsActivity.class);
+            startActivity(settingsActivity);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

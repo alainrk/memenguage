@@ -7,7 +7,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -15,11 +14,7 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.util.Log;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -66,7 +61,7 @@ public class RandomIntentService extends IntentService {
             crs.moveToFirst();
             sendNotification(crs.getLong(crs.getColumnIndex(Constants.FIELD_ID)));
         } catch (Exception e) {
-            Log.d("ERRRRRRRRROR", e.toString());
+            Log.d("RandomIntentService", e.toString());
             setTimeout();
         }
     }

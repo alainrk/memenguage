@@ -21,8 +21,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 getApplicationContext().startService(randomStart);
                 return true;
             }
-
         });
     }
-
 }
