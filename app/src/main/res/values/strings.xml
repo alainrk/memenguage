@@ -7,16 +7,34 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_create_edit">Word</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <string name="intervals_time_default">15</string>
+
+    <string-array name="intervals_time">
+        <item>1 min</item>
+        <item>15 min</item>
+        <item>"30 min"</item>
+        <item>"1 h"</item>
+        <item>"1 h 30 min"</item>
+        <item>"2 h"</item>
+        <item>"5 h"</item>
+        <item>"12 h"</item>
+        <item>"24 h"</item>
+    </string-array>
+
+    <string-array name="intervals_time_value">
+        <item>1</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+        <item>300</item>
+        <item>720</item>
+        <item>1440</item>
+    </string-array>
+
 </resources>

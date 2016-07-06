@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="notifications_enabled"
+        android:title="Notifications enabled" />
+
+    <ListPreference
+        android:dependency="notifications_enabled"
+        android:key="interval_notifications"
+        android:title="Interval notifications"
+        android:dialogTitle="Choose an interval"
+        android:entries="@array/intervals_time"
+        android:entryValues="@array/intervals_time_value"
+        android:defaultValue="@string/intervals_time_default" />
+</PreferenceScreen>

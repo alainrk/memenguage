@@ -7,12 +7,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.content.SharedPreferencesCompat;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -49,6 +52,12 @@ public class RandomIntentService extends IntentService {
     }
 
     private void handleActionRandomWord() {
+        Boolean notificationsActive = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("notifications_enabled", false);
+        if (!notificationsActive) {
+            setTimeout();
+            return;
+        }
+
         dbmanager = new DBManager(getApplicationContext());
         crs = dbmanager.getRandomWordNotUsed();
 //        int f = crs.getColumnIndex(Constants.FIELD_ID);
@@ -58,6 +67,7 @@ public class RandomIntentService extends IntentService {
             sendNotification(crs.getLong(crs.getColumnIndex(Constants.FIELD_ID)));
         } catch (Exception e) {
             Log.d("ERRRRRRRRROR", e.toString());
+            setTimeout();
         }
     }
 
@@ -80,8 +90,9 @@ public class RandomIntentService extends IntentService {
             Log.d("Randomintentservice", "Cancel pending intent error");
         }
 
+        long millisec = Long.parseLong(PreferenceManager.getDefaultSharedPreferences(this).getString("interval_notifications", "120")) * 60 * 1000;
         alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + Constants.TIMEOUT_RANDOM_WORDS_MILLISECONDS, alarmIntent);
+                SystemClock.elapsedRealtime() + millisec, alarmIntent);
     }
 
     private void sendNotification(long id_word) {
