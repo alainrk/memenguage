@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FilterQueryProvider;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,7 +47,8 @@ public class MainActivity extends AppCompatActivity
 
     private DBManager dbmanager;
     private Cursor crs;
-    private CursorAdapter adapter;
+//    private CursorAdapter adapter;
+    private WordsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,39 +100,49 @@ public class MainActivity extends AppCompatActivity
     private void updateWordsList() {
         wordsListview = (ListView) findViewById(R.id.wordslistview);
 
+        adapter = new WordsAdapter(getApplicationContext(), crs, 0);
+
+        adapter.setFilterQueryProvider(new FilterQueryProvider() {
+            public Cursor runQuery(CharSequence constraint) {
+                Log.d("PORCA MADONNA","xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                return dbmanager.getMatchingWords(String.valueOf(constraint));
+            }
+        });
+
         // specify an adapter (see also next example
-        adapter = new CursorAdapter(this, crs, 0) {
-            @Override
-            public View newView(Context ctx, Cursor arg1, ViewGroup arg2)
-            {
-                View v = getLayoutInflater().inflate(R.layout.wordstextview, null);
-                return v;
-            }
-            @Override
-            public void bindView(View v, Context arg1, Cursor crs)
-            {
-//                int color = (crs.getPosition() % 2 == 0) ? Color.argb(50,178,245,242) : Color.WHITE;
-                int color = (crs.getPosition() % 2 == 0) ? Color.argb(50,255,202,40) : Color.WHITE;
-                v.setBackgroundColor(color);
-                String ita = crs.getString(crs.getColumnIndex(Constants.FIELD_ITA));
-                String eng = crs.getString(crs.getColumnIndex(Constants.FIELD_ENG));
+//        adapter = new CursorAdapter(this, crs, 0) {
+//            @Override
+//            public View newView(Context ctx, Cursor arg1, ViewGroup arg2)
+//            {
+//                View v = getLayoutInflater().inflate(R.layout.wordstextview, null);
+//                return v;
+//            }
+//            @Override
+//            public void bindView(View v, Context arg1, Cursor crs)
+//            {
+////                int color = (crs.getPosition() % 2 == 0) ? Color.argb(50,178,245,242) : Color.WHITE;
+//                int color = (crs.getPosition() % 2 == 0) ? Color.argb(50,255,202,40) : Color.WHITE;
+//                v.setBackgroundColor(color);
+//                String ita = crs.getString(crs.getColumnIndex(Constants.FIELD_ITA));
+//                String eng = crs.getString(crs.getColumnIndex(Constants.FIELD_ENG));
+//
+//                TextView itatxt = (TextView) v.findViewById(R.id.itatxt);
+//                TextView engtxt = (TextView) v.findViewById(R.id.engtxt);
+//                itatxt.setText(ita);
+//                itatxt.setTag("itatxt");
+//                engtxt.setText(eng);
+//                itatxt.setTag("engtxt");
+//
+//            }
+//            @Override
+//            public long getItemId(int position)
+//            {
+//                Cursor crs = adapter.getCursor();
+//                crs.moveToPosition(position);
+//                return crs.getLong(crs.getColumnIndex(Constants.FIELD_ID));
+//            }
+//        };
 
-                TextView itatxt = (TextView) v.findViewById(R.id.itatxt);
-                TextView engtxt = (TextView) v.findViewById(R.id.engtxt);
-                itatxt.setText(ita);
-                itatxt.setTag("itatxt");
-                engtxt.setText(eng);
-                itatxt.setTag("engtxt");
-
-            }
-            @Override
-            public long getItemId(int position)
-            {
-                Cursor crs = adapter.getCursor();
-                crs.moveToPosition(position);
-                return crs.getLong(crs.getColumnIndex(Constants.FIELD_ID));
-            }
-        };
         wordsListview.setAdapter(adapter);
         wordsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -183,7 +195,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextChange(String newText) {
                 Log.d("MainActivity Search", newText.toString());
-
+                adapter.getFilter().filter(newText);
+                adapter.notifyDataSetChanged();
                 return false;
             }
         });

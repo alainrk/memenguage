@@ -142,4 +142,23 @@ public class DBManager {
         }
         return crs;
     }
+
+    public Cursor getMatchingWords(String search) {
+        if (search.equals(""))
+            return getAllWords();
+
+        Cursor crs;
+        try {
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            String whereClause = Constants.FIELD_ITA +  " like ? or " + Constants.FIELD_ENG + " like ?";
+            String[] whereArgs = {"%"+search+"%", "%"+search+"%"};
+
+            crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, null, null);
+            Log.d("aaaaaa","aaa");
+        } catch(SQLiteException sqle) {
+            return null;
+        }
+        return crs;
+    }
 }
