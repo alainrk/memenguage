@@ -1,45 +1,92 @@
 package alaindc.memenguage;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatImageButton;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.Filter;
-import android.widget.FilterQueryProvider;
 import android.widget.Filterable;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.Toast;
 
 /**
  * Created by narko on 03/07/16.
  */
 public class WordsAdapter extends CursorAdapter implements Filterable {
 
-    Context context;
+    Context activityContext;
+    private DBManager dbmanager;
 
     public WordsAdapter(Context context, Cursor c, int flags){
         super(context, c, flags);
-        this.context = context;
+        this.activityContext = context;
+        dbmanager = new DBManager(context);
     }
 
     @Override
     public View newView(Context ctx, Cursor arg1, ViewGroup arg2)
     {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-        View v = inflater.inflate(R.layout.wordstextview, null);
+        LayoutInflater inflater = (LayoutInflater) activityContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+//        View v = inflater.inflate(R.layout.wordstextview, null);
+        View v = inflater.inflate(R.layout.wordstextviewslide, null);
+
+//        SwipeLayout swipeLayout =  (SwipeLayout)findViewById(R.id.wordstextviewslide);
+//
+////set show mode.
+//        swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+//
+////add drag edge.(If the BottomView has 'layout_gravity' attribute, this line is unnecessary)
+//        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, findViewById(R.id.bottom_wrapper));
+//
+//        swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+//            @Override
+//            public void onClose(SwipeLayout layout) {
+//                //when the SurfaceView totally cover the BottomView.
+//            }
+//
+//            @Override
+//            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+//                //you are swiping.
+//            }
+//
+//            @Override
+//            public void onStartOpen(SwipeLayout layout) {
+//
+//            }
+//
+//            @Override
+//            public void onOpen(SwipeLayout layout) {
+//                //when the BottomView totally show.
+//            }
+//
+//            @Override
+//            public void onStartClose(SwipeLayout layout) {
+//
+//            }
+//
+//            @Override
+//            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+//                //when user's hand released.
+//            }
+//        });
+
         return v;
     }
     @Override
-    public void bindView(View v, Context arg1, Cursor crs)
+    public void bindView(View v, Context ctx, Cursor crs)
     {
-//                int color = (crs.getPosition() % 2 == 0) ? Color.argb(50,178,245,242) : Color.WHITE;
-        int color = (crs.getPosition() % 2 == 0) ? Color.argb(50,255,202,40) : Color.WHITE;
+        final Cursor cursor = crs;
+        final Context context = ctx;
+
+        int color = (crs.getPosition() % 2 == 0) ? Color.argb(150,255,202,40) : Color.WHITE;
         v.setBackgroundColor(color);
         String ita = crs.getString(crs.getColumnIndex(Constants.FIELD_ITA));
         String eng = crs.getString(crs.getColumnIndex(Constants.FIELD_ENG));
@@ -49,7 +96,25 @@ public class WordsAdapter extends CursorAdapter implements Filterable {
         itatxt.setText(ita);
         itatxt.setTag("itatxt");
         engtxt.setText(eng);
-        itatxt.setTag("engtxt");
+        engtxt.setTag("engtxt");
+
+        AppCompatImageButton editbutton = (AppCompatImageButton) v.findViewById(R.id.editcompbutton);
+        editbutton.setBackgroundColor(Color.WHITE);
+
+//        editbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent createWordIntentActivity = new Intent(activityContext, CreateEditActivity.class);
+//                createWordIntentActivity.setAction(Constants.ACTION_EDIT_WORD);
+//
+//                createWordIntentActivity.putExtra(Constants.EXTRA_EDIT_ITA, cursor.getString(cursor.getColumnIndex(Constants.FIELD_ITA)));
+//                createWordIntentActivity.putExtra(Constants.EXTRA_EDIT_ENG, cursor.getString(cursor.getColumnIndex(Constants.FIELD_ENG)));
+//                createWordIntentActivity.putExtra(Constants.EXTRA_EDIT_ID, getItemId(cursor.getPosition()));
+//                createWordIntentActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//                activityContext.startActivity(createWordIntentActivity);
+//            }
+//        });
 
     }
     @Override

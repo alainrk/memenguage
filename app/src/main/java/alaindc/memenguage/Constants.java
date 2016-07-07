@@ -29,6 +29,7 @@ public class Constants {
     public static final String ACTION_GUESS_ACTIVITY = "ACTION_GUESS_ACTIVITY";
     public static final String EXTRA_GUESS_IDWORD = "EXTRA_GUESS_IDWORD";
 
+    public static final String INTENT_VIEW_DSCHANGE = "INTENT_VIEW_DSCHANGE";
 
     public static final int TIMEOUT_RANDOM_WORDS_MILLISECONDS = 10*1000;
 
