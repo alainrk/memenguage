@@ -1,18 +1,11 @@
 package alaindc.memenguage;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatImageButton;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +13,6 @@ import android.widget.CursorAdapter;
 import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.daimajia.swipe.SwipeLayout;
-
 /**
  * Created by narko on 03/07/16.
  */
@@ -45,7 +35,7 @@ public class WordsAdapter extends CursorAdapter implements Filterable {
     @Override
     public void bindView(View v, Context ctx, Cursor crs)
     {
-        v.setBackgroundColor((crs.getPosition() % 2 == 0) ? Color.argb(50,76,175,80) : Color.WHITE);
+        v.setBackgroundColor((crs.getPosition() % 2 == 0) ? Color.argb(50,76,175,80) : Color.argb(50,255,248,225));
 
         String ita = crs.getString(crs.getColumnIndex(Constants.FIELD_ITA));
         String eng = crs.getString(crs.getColumnIndex(Constants.FIELD_ENG));

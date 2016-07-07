@@ -16,6 +16,9 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import alaindc.memenguage.View.GuessActivity;
+import alaindc.memenguage.View.MainActivity;
+
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.

@@ -1,8 +1,12 @@
-package alaindc.memenguage;
+package alaindc.memenguage.View;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
+
+import alaindc.memenguage.Constants;
+import alaindc.memenguage.R;
+import alaindc.memenguage.RandomIntentService;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 

@@ -1,4 +1,4 @@
-package alaindc.memenguage;
+package alaindc.memenguage.View;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

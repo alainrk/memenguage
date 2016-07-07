@@ -1,4 +1,4 @@
-package alaindc.memenguage;
+package alaindc.memenguage.View;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Random;
+
+import alaindc.memenguage.Constants;
+import alaindc.memenguage.DBManager;
+import alaindc.memenguage.R;
+import alaindc.memenguage.RandomIntentService;
 
 public class GuessActivity extends AppCompatActivity {
 
