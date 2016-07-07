@@ -12,8 +12,8 @@
 
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textStyle="bold"
             android:text="IT"
@@ -22,40 +22,45 @@
             android:textColor="#000000" />
 
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:hint="Italian"
-        android:id="@+id/itatxt"
-        android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:hint="Italian"
+            android:id="@+id/itatxt"
+            android:layout_weight="0.80"
+            android:layout_gravity="center_horizontal"
             android:textColor="#000000" />
 
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="horizontal" android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:weightSum="1">
 
 
-    <TextView
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textStyle="bold"
             android:text="EN"
             android:id="@+id/enlab"
-            android:layout_weight="0.07"
-        android:textColor="#000000" />
+            android:layout_weight="0.2"
+            android:layout_gravity="left"
+            android:gravity="left"
+            android:textColor="#000000" />
 
 
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:hint="English"
-        android:id="@+id/engtxt"
-        android:layout_gravity="center_horizontal"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/engtxt"
+            android:layout_weight="0.8"
+            android:layout_gravity="right"
+            android:gravity="right"
             android:textColor="#000000" />
 
     </LinearLayout>

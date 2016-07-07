@@ -109,9 +109,9 @@ public class MainActivity extends AppCompatActivity
         });
 
         wordsListview.setAdapter(adapter);
-        wordsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        wordsListview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
                 Intent createWordIntentActivity = new Intent(MainActivity.this, CreateEditActivity.class);
                 createWordIntentActivity.setAction(Constants.ACTION_EDIT_WORD);
 
@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity
                 createWordIntentActivity.putExtra(Constants.EXTRA_EDIT_ID, id);
 
                 MainActivity.this.startActivity(createWordIntentActivity);
+                return true;
             }
         });
     }

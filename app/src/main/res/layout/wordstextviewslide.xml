@@ -35,17 +35,6 @@ android:layout_width="match_parent" android:layout_height="80dp">
             android:layout_height="wrap_content"
             android:weightSum="1">
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textStyle="bold"
-                android:text="IT"
-                android:id="@+id/itlab"
-                android:layout_weight="0.1"
-                android:textColor="#000000" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,18 +50,6 @@ android:layout_width="match_parent" android:layout_height="80dp">
             android:orientation="horizontal" android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="1">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textStyle="bold"
-                android:text="EN"
-                android:id="@+id/enlab"
-                android:layout_weight="0.07"
-                android:textColor="#000000" />
-
 
             <TextView
                 android:layout_width="wrap_content"

@@ -5,9 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,16 +90,22 @@ public class WordsAdapter extends CursorAdapter implements Filterable {
         final Cursor cursor = crs;
         final Context context = ctx;
 
-        int color = (crs.getPosition() % 2 == 0) ? Color.argb(150,255,202,40) : Color.WHITE;
-        v.setBackgroundColor(color);
+        v.setBackgroundColor((crs.getPosition() % 2 == 0) ? Color.argb(50,76,175,80) : Color.WHITE);
+
         String ita = crs.getString(crs.getColumnIndex(Constants.FIELD_ITA));
         String eng = crs.getString(crs.getColumnIndex(Constants.FIELD_ENG));
 
         TextView itatxt = (TextView) v.findViewById(R.id.itatxt);
         TextView engtxt = (TextView) v.findViewById(R.id.engtxt);
-        itatxt.setText(ita);
+
+        SpannableString itastyle = new SpannableString("IT: "+ita);
+        SpannableString engstyle = new SpannableString("EN: "+eng);
+        itastyle.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0);
+        engstyle.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0);
+
+        itatxt.setText(itastyle);
         itatxt.setTag("itatxt");
-        engtxt.setText(eng);
+        engtxt.setText(engstyle);
         engtxt.setTag("engtxt");
 
         AppCompatImageButton editbutton = (AppCompatImageButton) v.findViewById(R.id.editcompbutton);
