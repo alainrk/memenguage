@@ -1,17 +1,16 @@
 package alaindc.memenguage;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.support.v4.content.LocalBroadcastManager;
-import android.text.format.Time;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Random;
 
 import okhttp3.MediaType;
@@ -71,6 +70,32 @@ public class ServerRequests {
         });
     }
 
+    public static void downloadFile (final Context context) {
+        FileDownloadService downloadService = ServiceGenerator.createService(FileDownloadService.class);
+
+        Call<ResponseBody> call = downloadService.downloadFileWithDynamicUrlSync(getMyDeviceId(context));
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.d("DownloadFIle", "server contacted and has file");
+
+                    boolean writtenToDisk = writeResponseBodyToDisk(response.body());
+
+                    Log.d("DownloadFIle", "file download was a success? " + writtenToDisk);
+                } else {
+                    Log.d("DownloadFIle", "server contact failed");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("DownloadFIle", "error");
+            }
+        });
+    }
+
     public static class ServiceGenerator {
 
         private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -83,6 +108,56 @@ public class ServerRequests {
         public static <S> S createService(Class<S> serviceClass) {
             Retrofit retrofit = builder.client(httpClient.build()).build();
             return retrofit.create(serviceClass);
+        }
+    }
+
+    private static boolean writeResponseBodyToDisk(ResponseBody body) {
+        try {
+            // TODO change the file location/name according to your needs
+            File futureStudioIconFile = new File("");//new File(getExternalFilesDir(null) + File.separator + "Future Studio Icon.png");
+
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+
+            try {
+                byte[] fileReader = new byte[4096];
+
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
+
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(futureStudioIconFile);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+
+                    if (read == -1) {
+                        break;
+                    }
+
+                    outputStream.write(fileReader, 0, read);
+
+                    fileSizeDownloaded += read;
+
+                    Log.d("WriteFileToDisk", "file download: " + fileSizeDownloaded + " of " + fileSize);
+                }
+
+                outputStream.flush();
+
+                return true;
+            } catch (IOException e) {
+                return false;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            return false;
         }
     }
 

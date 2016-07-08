@@ -13,7 +13,7 @@ import retrofit2.http.Part;
  */
 public interface FileUploadService {
     @Multipart
-    @POST(ServerConsts.RELATIVE_SERVER_REQUEST_URI)
+    @POST(ServerConsts.RELATIVE_SERVER_UPLOADDB_URI)
     Call<ResponseBody> upload(@Part("id") RequestBody id,
                               @Part MultipartBody.Part file);
 }
