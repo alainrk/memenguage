@@ -1,5 +1,6 @@
 package alaindc.memenguage.View;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -43,6 +45,11 @@ public class CreateEditActivity extends AppCompatActivity {
         saveButton = (Button) findViewById(R.id.savebutton);
         deleteButton = (Button) findViewById(R.id.deletebutton);
 
+        itaedittext.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //imm.showSoftInput(itaedittext, InputMethodManager.SHOW_IMPLICIT);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarEditAct);
         setSupportActionBar(toolbar);
 
@@ -73,6 +80,8 @@ public class CreateEditActivity extends AppCompatActivity {
 
             itaedittext.setText(intent.getStringExtra(Constants.EXTRA_EDIT_ITA));
             engedittext.setText(intent.getStringExtra(Constants.EXTRA_EDIT_ENG));
+
+            itaedittext.setSelection(itaedittext.getText().length());
 
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
