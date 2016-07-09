@@ -1,3 +1,19 @@
+/*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+* This file is part of Memenguage Android app.
+* Copyright (C) 2016 Alain Di Chiappari
+*/
+
 package alaindc.memenguage;
 
 import android.app.AlarmManager;
@@ -19,13 +35,6 @@ import android.util.Log;
 import alaindc.memenguage.View.GuessActivity;
 import alaindc.memenguage.View.MainActivity;
 
-/**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p/>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
- */
 public class RandomIntentService extends IntentService {
 
     private AlarmManager alarmMgr;
