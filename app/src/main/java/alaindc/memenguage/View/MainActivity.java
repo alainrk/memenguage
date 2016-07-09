@@ -187,6 +187,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(settingsActivity);
         } else if (id == R.id.nav_send) {
             ServerRequests.uploadFile(this.getDatabasePath(Constants.DBNAME), this);
+        } else if (id == R.id.nav_get) {
+            ServerRequests.downloadFile(this.getDatabasePath(Constants.DBNAME), this);
         } else if (id == R.id.nav_share) {
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");

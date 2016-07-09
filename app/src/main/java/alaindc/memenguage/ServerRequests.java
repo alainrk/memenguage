@@ -70,10 +70,11 @@ public class ServerRequests {
         });
     }
 
-    public static void downloadFile (final Context context) {
+    public static void downloadFile (final File file, final Context context) {
         FileDownloadService downloadService = ServiceGenerator.createService(FileDownloadService.class);
 
-        Call<ResponseBody> call = downloadService.downloadFileWithDynamicUrlSync(getMyDeviceId(context));
+        String id = getMyDeviceId(context);
+        Call<ResponseBody> call = downloadService.downloadFileWithDynamicUrlSync(ServerConsts.RELATIVE_SERVER_DOWNLOADDB_URI+id);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -81,9 +82,8 @@ public class ServerRequests {
                 if (response.isSuccessful()) {
                     Log.d("DownloadFIle", "server contacted and has file");
 
-                    boolean writtenToDisk = writeResponseBodyToDisk(response.body());
-
-                    Log.d("DownloadFIle", "file download was a success? " + writtenToDisk);
+                    boolean writtenToDisk = writeResponseBodyToDisk(file, response.body());
+                    //Log.d("DownloadFIle", "file download was a success? " + writtenToDisk);
                 } else {
                     Log.d("DownloadFIle", "server contact failed");
                 }
@@ -111,10 +111,8 @@ public class ServerRequests {
         }
     }
 
-    private static boolean writeResponseBodyToDisk(ResponseBody body) {
+    private static boolean writeResponseBodyToDisk(File file, ResponseBody body) {
         try {
-            // TODO change the file location/name according to your needs
-            File futureStudioIconFile = new File("");//new File(getExternalFilesDir(null) + File.separator + "Future Studio Icon.png");
 
             InputStream inputStream = null;
             OutputStream outputStream = null;
@@ -126,7 +124,7 @@ public class ServerRequests {
                 long fileSizeDownloaded = 0;
 
                 inputStream = body.byteStream();
-                outputStream = new FileOutputStream(futureStudioIconFile);
+                outputStream = new FileOutputStream(file);
 
                 while (true) {
                     int read = inputStream.read(fileReader);

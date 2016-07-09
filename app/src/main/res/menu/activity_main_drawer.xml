@@ -10,16 +10,24 @@
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="Settings" />
-        <item
-            android:id="@+id/nav_send"
-            android:icon="@drawable/ic_cloud_upload"
-            android:title="Upload Database" />
 
     </group>
 
+    <item android:title="Sync">
+        <menu>
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_cloud_upload"
+                android:title="Upload Database" />
+            <item
+                android:id="@+id/nav_get"
+                android:icon="@drawable/ic_cloud_download"
+                android:title="Restore Database" />
+        </menu>
+    </item>
+
     <item android:title="Communicate">
         <menu>
-
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
