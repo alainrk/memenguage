@@ -214,6 +214,9 @@ public class MainActivity extends AppCompatActivity
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Memento mori!");
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        } else if (id == R.id.nav_signin) {
+            Intent signinintent = new Intent(this, SignInActivity.class);
+            startActivity(signinintent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

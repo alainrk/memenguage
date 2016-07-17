@@ -12,5 +12,5 @@
     <dimen name="horizontal_line_fill_color">1dp</dimen>
     <dimen name="large_spacer">1dp</dimen>
 
-
+    <dimen name="g_top_margin">100dp</dimen>
 </resources>

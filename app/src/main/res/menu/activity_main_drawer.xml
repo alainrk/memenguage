@@ -16,6 +16,10 @@
     <item android:title="Sync">
         <menu>
             <item
+                android:id="@+id/nav_signin"
+                android:icon="@drawable/common_google_signin_btn_icon_dark"
+                android:title="Sign In" />
+            <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_cloud_upload"
                 android:title="Upload Database" />
