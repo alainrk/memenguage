@@ -38,11 +38,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.FilterQueryProvider;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import alaindc.memenguage.AsyncImageTask;
 import alaindc.memenguage.Constants;
 import alaindc.memenguage.DBManager;
 import alaindc.memenguage.FileUploadService;
@@ -63,9 +67,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         checkLoggedIn();
-
         setContentView(R.layout.activity_main);
 
         dbmanager = new DBManager(getApplicationContext());
@@ -94,6 +96,17 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) navigationView.setNavigationItemSelectedListener(this);
+
+        ImageView navlogo = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.navLogoImageView);
+
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE);
+        String personName = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_NAME, "");
+        String personEmail = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_EMAIL, "");
+        String personId = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_ID, "");
+        String personPhoto = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_PHOTOURI, "");
+
+        if (!personPhoto.equals(""))
+            new AsyncImageTask(navlogo).execute(personPhoto);
 
         // TODO Just one time and in bcast receiver start phone
         Intent randomStart = new Intent(MainActivity.this, RandomIntentService.class);

@@ -36,6 +36,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import alaindc.memenguage.AsyncImageTask;
 import alaindc.memenguage.Constants;
 import alaindc.memenguage.R;
 
@@ -153,16 +154,19 @@ public class SignInActivity extends AppCompatActivity implements
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
 
-            setSharedPreferencesLoginData(true, personName, personEmail, personId, personPhoto);
+            String personphotourl = "";
 
             if (personPhoto != null) {
-                ImageView i = (ImageView) findViewById(R.id.google_icon);
+                //ImageView i = (ImageView) findViewById(R.id.google_icon);
                 try {
-                    new LoadProfileImage(i).execute(new URL(personPhoto.toString()).toString());
+                    //new AsyncImageTask(i).execute(new URL(personPhoto.toString()).toString());
+                    personphotourl = new URL(personPhoto.toString()).toString();
                 } catch (MalformedURLException e) {
                     Log.d("Signinactivity", "Malformed URL exception photo");
                 }
             }
+
+            setSharedPreferencesLoginData(true, personName, personEmail, personId, personphotourl);
 
             mStatusTextView.setText(getString(R.string.signed_in_fmt, personName));
             updateUI(true);
@@ -178,14 +182,14 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
-    private void setSharedPreferencesLoginData (boolean logged, String personName, String personEmail, String personId, Uri personPhoto) {
+    private void setSharedPreferencesLoginData (boolean logged, String personName, String personEmail, String personId, String personPhotourl) {
         SharedPreferences sharedPref = getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(Constants.PREF_GOOGLEACCOUNT_ISLOGGED, logged);
         editor.putString(Constants.PREF_GOOGLEACCOUNT_NAME, personName);
         editor.putString(Constants.PREF_GOOGLEACCOUNT_EMAIL, personEmail);
         editor.putString(Constants.PREF_GOOGLEACCOUNT_ID, personId);
-        editor.putString(Constants.PREF_GOOGLEACCOUNT_PHOTOURI, (personPhoto != null) ? personPhoto.toString() : "");
+        editor.putString(Constants.PREF_GOOGLEACCOUNT_PHOTOURI, personPhotourl);
         editor.commit();
     }
 
@@ -264,60 +268,6 @@ public class SignInActivity extends AppCompatActivity implements
             case R.id.disconnect_button:
                 revokeAccess();
                 break;
-        }
-    }
-
-    /**
-     * Background Async task to load user profile picture from url
-     * */
-    private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public LoadProfileImage(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            saveToInternalStorage(result);
-            bmImage.setImageBitmap(result);
-
-        }
-
-        private String saveToInternalStorage(Bitmap bitmapImage){
-            ContextWrapper cw = new ContextWrapper(getApplicationContext());
-            // path to /data/data/yourapp/app_data/imageDir
-            File directory = cw.getDir("", Context.MODE_PRIVATE);
-            // Create imageDir
-            File mypath = new File(directory,"profile.jpg");
-
-            FileOutputStream fos = null;
-            try {
-                fos = new FileOutputStream(mypath);
-                // Use the compress method on the BitMap object to write image to the OutputStream
-                bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    fos.close();
-                } catch (IOException ioe) {
-                    Log.d("Image Task", "Error in closing file");
-                }
-            }
-            return directory.getAbsolutePath();
         }
     }
 
