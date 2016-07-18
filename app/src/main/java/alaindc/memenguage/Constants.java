@@ -19,6 +19,12 @@ package alaindc.memenguage;
 public class Constants {
     public static final String DBNAME = "memenguageDB";
 
+    public static final String PREF_FILE = "memenguagesharedpreference";
+    public static final String PREF_GOOGLEACCOUNT_NAME = "PREF_GOOGLEACCOUNT_NAME";
+    public static final String PREF_GOOGLEACCOUNT_EMAIL = "PREF_GOOGLEACCOUNT_EMAIL";
+    public static final String PREF_GOOGLEACCOUNT_ID = "PREF_GOOGLEACCOUNT_ID";
+    public static final String PREF_GOOGLEACCOUNT_PHOTOURI = "PREF_GOOGLEACCOUNT_PHOTOURI";
+
     public static final String TABLE_WORDS = "words";
 
     public static final String FIELD_ID = "_id";

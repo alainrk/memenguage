@@ -1,11 +1,19 @@
 package alaindc.memenguage.View;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
@@ -19,11 +27,20 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
+import alaindc.memenguage.Constants;
 import alaindc.memenguage.R;
 
 /**
- * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
- * profile.
+ * Activity to retrieve of the Google user's ID, email address, and basic profile.
  */
 public class SignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -49,35 +66,26 @@ public class SignInActivity extends AppCompatActivity implements
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.disconnect_button).setOnClickListener(this);
 
-        // [START configure_signin]
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .requestId()
+                .requestProfile()
                 .build();
-        // [END configure_signin]
 
-        // [START build_client]
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
+        // Build a GoogleApiClient with access to the Google Sign-In API and the options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        // [END build_client]
 
-        // [START customize_button]
-        // Customize sign-in button. The sign-in button can be displayed in
-        // multiple sizes and color schemes. It can also be contextually
-        // rendered based on the requested scopes. For example. a red button may
-        // be displayed when Google+ scopes are requested, but a white button
-        // may be displayed when only basic profile is requested. Try adding the
-        // Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
-        // difference.
+        // Customize sign-in button. It can be contextually rendered based on the requested scopes,
+        // red for Google+, white button when only basic profile is requested.
+        // Add Scopes.PLUS_LOGIN scope to the GoogleSignInOptions.
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setScopes(gso.getScopeArray());
-        // [END customize_button]
     }
 
     @Override
@@ -106,7 +114,6 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
-    // [START onActivityResult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -117,31 +124,53 @@ public class SignInActivity extends AppCompatActivity implements
             handleSignInResult(result);
         }
     }
-    // [END onActivityResult]
 
-    // [START handleSignInResult]
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+
+            String personName = acct.getDisplayName();
+            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+//            Uri personPhoto = acct.getPhotoUrl();
+            Uri personPhoto = acct.getPhotoUrl();
+
+            SharedPreferences sharedPref = getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString(Constants.PREF_GOOGLEACCOUNT_NAME, personName);
+            editor.putString(Constants.PREF_GOOGLEACCOUNT_EMAIL, personEmail);
+            editor.putString(Constants.PREF_GOOGLEACCOUNT_ID, personId);
+            if (personPhoto != null)
+                editor.putString(Constants.PREF_GOOGLEACCOUNT_PHOTOURI, personPhoto.toString());
+            editor.commit();
+
+//            ImageTask imageTask = new ImageTask();
+//            imageTask.execute(personPhoto.toString());
+
+            if (personPhoto != null) {
+                ImageView i = (ImageView) findViewById(R.id.google_icon);
+                try {
+                    new LoadProfileImage(i).execute(new URL(personPhoto.toString()).toString());
+                } catch (MalformedURLException e) {
+                    Log.d("Signinactivity", "Malformed URL exception photo");
+                }
+            }
+
+            mStatusTextView.setText(getString(R.string.signed_in_fmt, personName));
+
             updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
         }
     }
-    // [END handleSignInResult]
 
-    // [START signIn]
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-    // [END signIn]
 
-    // [START signOut]
     private void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
@@ -153,9 +182,7 @@ public class SignInActivity extends AppCompatActivity implements
                     }
                 });
     }
-    // [END signOut]
 
-    // [START revokeAccess]
     private void revokeAccess() {
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
@@ -167,7 +194,6 @@ public class SignInActivity extends AppCompatActivity implements
                     }
                 });
     }
-    // [END revokeAccess]
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -218,4 +244,59 @@ public class SignInActivity extends AppCompatActivity implements
                 break;
         }
     }
+
+    /**
+     * Background Async task to load user profile picture from url
+     * */
+    private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public LoadProfileImage(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            saveToInternalStorage(result);
+            bmImage.setImageBitmap(result);
+
+        }
+
+        private String saveToInternalStorage(Bitmap bitmapImage){
+            ContextWrapper cw = new ContextWrapper(getApplicationContext());
+            // path to /data/data/yourapp/app_data/imageDir
+            File directory = cw.getDir("", Context.MODE_PRIVATE);
+            // Create imageDir
+            File mypath = new File(directory,"profile.jpg");
+
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(mypath);
+                // Use the compress method on the BitMap object to write image to the OutputStream
+                bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    fos.close();
+                } catch (IOException ioe) {
+                    Log.d("Image Task", "Error in closing file");
+                }
+            }
+            return directory.getAbsolutePath();
+        }
+    }
+
 }

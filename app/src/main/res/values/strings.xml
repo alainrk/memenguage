@@ -39,7 +39,7 @@
 
     <string name="title_activity_sign_in">SignInActivity</string>
 
-    <string name="title_text">Memenguage\nGoogle Login</string>
+    <string name="title_text">Memenguage</string>
 
     <!-- Sign-in status messages -->
     <string name="signed_in_fmt">Signed in as: %s</string>

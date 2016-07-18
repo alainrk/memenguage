@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity
             ServerRequests.uploadFile(this.getDatabasePath(Constants.DBNAME), this);
         } else if (id == R.id.nav_get) {
             Toast.makeText(getApplicationContext(), "Feature is coming soon", Toast.LENGTH_SHORT).show();
-            //ServerRequests.downloadFile(this.getDatabasePath(Constants.DBNAME), this);
+            ServerRequests.downloadFile(this.getDatabasePath(Constants.DBNAME), this);
         } else if (id == R.id.nav_share) {
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
