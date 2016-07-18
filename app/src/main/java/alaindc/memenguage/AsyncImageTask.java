@@ -39,7 +39,6 @@ public class AsyncImageTask extends AsyncTask<String, Void, Bitmap> {
     protected void onPostExecute(Bitmap result) {
 //        saveToInternalStorage(result);
         bmImage.setImageBitmap(result);
-        bmImage.setMaxHeight(70);
     }
 
 //    private String saveToInternalStorage(Bitmap bitmapImage){

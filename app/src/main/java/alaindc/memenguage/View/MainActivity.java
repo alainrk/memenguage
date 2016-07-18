@@ -40,6 +40,7 @@ import android.widget.AdapterView;
 import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -59,6 +60,11 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListView wordsListview;
+
+    private String personName;
+    private String personEmail;
+    private String personId;
+    private String personPhoto;
 
     private DBManager dbmanager;
     private Cursor crs;
@@ -98,15 +104,19 @@ public class MainActivity extends AppCompatActivity
         if (navigationView != null) navigationView.setNavigationItemSelectedListener(this);
 
         ImageView navlogo = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.navLogoImageView);
+        TextView navtitle = (TextView)  navigationView.getHeaderView(0).findViewById(R.id.navTitle);
+        TextView navsubtitle = (TextView)  navigationView.getHeaderView(0).findViewById(R.id.navSubTitle);
 
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE);
-        String personName = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_NAME, "");
-        String personEmail = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_EMAIL, "");
-        String personId = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_ID, "");
-        String personPhoto = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_PHOTOURI, "");
+        personName = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_NAME, "");
+        personEmail = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_EMAIL, "");
+        personId = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_ID, "");
+        personPhoto = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_PHOTOURI, "");
 
         if (!personPhoto.equals(""))
             new AsyncImageTask(navlogo).execute(personPhoto);
+        navtitle.setText(personName);
+        navsubtitle.setText(personEmail);
 
         // TODO Just one time and in bcast receiver start phone
         Intent randomStart = new Intent(MainActivity.this, RandomIntentService.class);
@@ -236,10 +246,10 @@ public class MainActivity extends AppCompatActivity
             Intent settingsActivity = new Intent(this, SettingsActivity.class);
             startActivity(settingsActivity);
         } else if (id == R.id.nav_send) {
-            ServerRequests.uploadFile(this.getDatabasePath(Constants.DBNAME), this);
+            ServerRequests.uploadFile(personId, this.getDatabasePath(Constants.DBNAME), this);
         } else if (id == R.id.nav_get) {
-            Toast.makeText(getApplicationContext(), "Feature is coming soon", Toast.LENGTH_SHORT).show();
-            ServerRequests.downloadFile(this.getDatabasePath(Constants.DBNAME), this);
+            //Toast.makeText(getApplicationContext(), "Feature is coming soon", Toast.LENGTH_SHORT).show();
+            ServerRequests.downloadFile(personId, this.getDatabasePath(Constants.DBNAME), this);
         } else if (id == R.id.nav_share) {
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");

@@ -45,7 +45,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ServerRequests {
 
-    public static void uploadFile(File file, final Context context) {
+    public static void uploadFile(final String userid, File file, final Context context) {
         // create upload service client
         FileUploadService service = ServiceGenerator.createService(FileUploadService.class);
 
@@ -57,11 +57,9 @@ public class ServerRequests {
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        // add another part within the multipart request
-        String idString = getMyDeviceId(context);
         RequestBody id =
                 RequestBody.create(
-                        MediaType.parse("multipart/form-data"), idString);
+                        MediaType.parse("multipart/form-data"), userid);
 
         // finally, execute the request
         Call<ResponseBody> call = service.upload(id, body);
@@ -71,7 +69,7 @@ public class ServerRequests {
                                    Response<ResponseBody> response) {
                 try {
                     String res = response.body().string().replace("\"","");
-                    if (res.equals(getMyDeviceId(context)))
+                    if (res.equals(userid))
                         Toast.makeText(context, "Database uploaded!", Toast.LENGTH_LONG).show();
                     Log.v("Upload", "success");
                 } catch (Exception e) {
@@ -86,11 +84,10 @@ public class ServerRequests {
         });
     }
 
-    public static void downloadFile (final File file, final Context context) {
+    public static void downloadFile (String userid, final File file, final Context context) {
         FileDownloadService downloadService = ServiceGenerator.createService(FileDownloadService.class);
 
-        String id = getMyDeviceId(context);
-        Call<ResponseBody> call = downloadService.downloadFileWithDynamicUrlSync(ServerConsts.RELATIVE_SERVER_DOWNLOADDB_URI+id);
+        Call<ResponseBody> call = downloadService.downloadFileWithDynamicUrlSync(ServerConsts.RELATIVE_SERVER_DOWNLOADDB_URI+userid);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -175,18 +172,18 @@ public class ServerRequests {
         }
     }
 
-    public static String getMyDeviceId(Context context){
-        try {
-            WifiManager wifiMan = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-            WifiInfo wifiInfo = wifiMan.getConnectionInfo();
-
-            return Integer.toString(Math.abs(wifiInfo.getMacAddress().hashCode()));
-        } catch (Exception e) {
-            Random rand = new Random(System.currentTimeMillis());
-            return String.valueOf(rand.nextLong()+9999999);
-        }
-
-    }
+//    public static String getMyDeviceId(Context context){
+//        try {
+//            WifiManager wifiMan = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+//            WifiInfo wifiInfo = wifiMan.getConnectionInfo();
+//
+//            return Integer.toString(Math.abs(wifiInfo.getMacAddress().hashCode()));
+//        } catch (Exception e) {
+//            Random rand = new Random(System.currentTimeMillis());
+//            return String.valueOf(rand.nextLong()+9999999);
+//        }
+//
+//    }
 
 
 }
