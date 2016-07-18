@@ -17,7 +17,9 @@
 package alaindc.memenguage.View;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkLoggedIn();
+
         setContentView(R.layout.activity_main);
 
         dbmanager = new DBManager(getApplicationContext());
@@ -99,10 +104,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        checkLoggedIn();
+    }
+
+    @Override
     protected void onPostResume() {
         super.onPostResume();
         crs = dbmanager.getAllWords();
         adapter.swapCursor(crs);
+    }
+
+    private void checkLoggedIn() {
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE);
+        if (!sharedPref.getBoolean(Constants.PREF_GOOGLEACCOUNT_ISLOGGED, false)) {
+            Intent signinintent = new Intent(this, SignInActivity.class);
+            signinintent.setAction(Constants.SIGNIN_LOGOUT);
+            startActivity(signinintent);
+        }
     }
 
     private void updateWordsList() {
@@ -216,6 +236,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
         } else if (id == R.id.nav_signin) {
             Intent signinintent = new Intent(this, SignInActivity.class);
+            signinintent.setAction(Constants.SIGNIN_LOGOUT);
             startActivity(signinintent);
         }
 

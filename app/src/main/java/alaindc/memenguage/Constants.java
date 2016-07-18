@@ -20,6 +20,7 @@ public class Constants {
     public static final String DBNAME = "memenguageDB";
 
     public static final String PREF_FILE = "memenguagesharedpreference";
+    public static final String PREF_GOOGLEACCOUNT_ISLOGGED = "PREF_GOOGLEACCOUNT_ISLOGGED";
     public static final String PREF_GOOGLEACCOUNT_NAME = "PREF_GOOGLEACCOUNT_NAME";
     public static final String PREF_GOOGLEACCOUNT_EMAIL = "PREF_GOOGLEACCOUNT_EMAIL";
     public static final String PREF_GOOGLEACCOUNT_ID = "PREF_GOOGLEACCOUNT_ID";
@@ -47,6 +48,8 @@ public class Constants {
 
     public static final String ACTION_GUESS_ACTIVITY = "ACTION_GUESS_ACTIVITY";
     public static final String EXTRA_GUESS_IDWORD = "EXTRA_GUESS_IDWORD";
+
+    public static final String SIGNIN_LOGOUT = "SIGNIN_LOGOUT";
 
     public static final String INTENT_VIEW_DSCHANGE = "INTENT_VIEW_DSCHANGE";
 

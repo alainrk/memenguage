@@ -44,7 +44,10 @@ import alaindc.memenguage.R;
  */
 public class SignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks,
         View.OnClickListener {
+
+    private static String ACTION_STARTING = "";
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -57,6 +60,9 @@ public class SignInActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        Intent intent = getIntent();
+        ACTION_STARTING = (intent.getAction().equals(Constants.SIGNIN_LOGOUT)) ? "logout" : "login";
 
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
@@ -115,6 +121,17 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onConnected(final Bundle arg0) {
+        if (ACTION_STARTING.equals("logout"))
+            revokeAccess();
+    }
+
+    @Override
+    public void onConnectionSuspended(final int arg) {
+
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -127,26 +144,16 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
 
             String personName = acct.getDisplayName();
             String personEmail = acct.getEmail();
             String personId = acct.getId();
-//            Uri personPhoto = acct.getPhotoUrl();
             Uri personPhoto = acct.getPhotoUrl();
 
-            SharedPreferences sharedPref = getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString(Constants.PREF_GOOGLEACCOUNT_NAME, personName);
-            editor.putString(Constants.PREF_GOOGLEACCOUNT_EMAIL, personEmail);
-            editor.putString(Constants.PREF_GOOGLEACCOUNT_ID, personId);
-            if (personPhoto != null)
-                editor.putString(Constants.PREF_GOOGLEACCOUNT_PHOTOURI, personPhoto.toString());
-            editor.commit();
-
-//            ImageTask imageTask = new ImageTask();
-//            imageTask.execute(personPhoto.toString());
+            setSharedPreferencesLoginData(true, personName, personEmail, personId, personPhoto);
 
             if (personPhoto != null) {
                 ImageView i = (ImageView) findViewById(R.id.google_icon);
@@ -158,12 +165,28 @@ public class SignInActivity extends AppCompatActivity implements
             }
 
             mStatusTextView.setText(getString(R.string.signed_in_fmt, personName));
-
             updateUI(true);
+
+            if (!ACTION_STARTING.equals("logout")) {
+                Intent mainactintent = new Intent(this, MainActivity.class);
+                startActivity(mainactintent);
+            }
+
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
         }
+    }
+
+    private void setSharedPreferencesLoginData (boolean logged, String personName, String personEmail, String personId, Uri personPhoto) {
+        SharedPreferences sharedPref = getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(Constants.PREF_GOOGLEACCOUNT_ISLOGGED, logged);
+        editor.putString(Constants.PREF_GOOGLEACCOUNT_NAME, personName);
+        editor.putString(Constants.PREF_GOOGLEACCOUNT_EMAIL, personEmail);
+        editor.putString(Constants.PREF_GOOGLEACCOUNT_ID, personId);
+        editor.putString(Constants.PREF_GOOGLEACCOUNT_PHOTOURI, (personPhoto != null) ? personPhoto.toString() : "");
+        editor.commit();
     }
 
     private void signIn() {
@@ -176,9 +199,8 @@ public class SignInActivity extends AppCompatActivity implements
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        // [START_EXCLUDE]
+                        setSharedPreferencesLoginData(false, "", "", "", null);
                         updateUI(false);
-                        // [END_EXCLUDE]
                     }
                 });
     }
@@ -188,9 +210,8 @@ public class SignInActivity extends AppCompatActivity implements
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        // [START_EXCLUDE]
+                        setSharedPreferencesLoginData(false, "", "", "", null);
                         updateUI(false);
-                        // [END_EXCLUDE]
                     }
                 });
     }
@@ -234,6 +255,7 @@ public class SignInActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
+                ACTION_STARTING = "login";
                 signIn();
                 break;
             case R.id.sign_out_button:
