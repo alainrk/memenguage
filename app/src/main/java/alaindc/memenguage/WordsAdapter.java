@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
@@ -50,16 +51,24 @@ public class WordsAdapter extends CursorAdapter implements Filterable {
     {
         v.setBackgroundColor((crs.getPosition() % 2 == 0) ? Color.argb(50,76,175,80) : Color.argb(50,255,248,225));
 
-        String ita = crs.getString(crs.getColumnIndex(Constants.FIELD_ITA));
-        String eng = crs.getString(crs.getColumnIndex(Constants.FIELD_ENG));
-
         TextView itatxt = (TextView) v.findViewById(R.id.itatxt);
         TextView engtxt = (TextView) v.findViewById(R.id.engtxt);
 
-        SpannableString itastyle = new SpannableString("\uDBB9\uDCE9 "+ita);
-        SpannableString engstyle = new SpannableString("\uDBB9\uDCEA "+eng);
-//        itastyle.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0);
-//        engstyle.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0);
+        String ita, eng;
+        SpannableString itastyle, engstyle;
+
+        ita = crs.getString(crs.getColumnIndex(Constants.FIELD_ITA));
+        eng = crs.getString(crs.getColumnIndex(Constants.FIELD_ENG));
+
+        if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
+            itastyle = new SpannableString("\uDBB9\uDCE9 "+ita);
+            engstyle = new SpannableString("\uDBB9\uDCEA "+eng);
+        } else {
+            itastyle = new SpannableString("IT: "+ita);
+            engstyle = new SpannableString("EN: "+eng);
+            itastyle.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0);
+            engstyle.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0);
+        }
 
         itatxt.setText(itastyle);
         itatxt.setTag("itatxt");
