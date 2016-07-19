@@ -135,8 +135,8 @@ public class MainActivity extends AppCompatActivity
         personId = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_ID, "");
         personPhoto = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_PHOTOURI, "");
 
-        if (!personPhoto.equals(""))
-            new AsyncImageTask(navlogo).execute(personPhoto);
+//        if (!personPhoto.equals(""))
+//            new AsyncImageTask(navlogo).execute(personPhoto);
         navtitle.setText(personName);
         navsubtitle.setText(personEmail);
 

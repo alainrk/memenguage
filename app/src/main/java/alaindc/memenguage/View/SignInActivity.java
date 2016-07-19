@@ -173,9 +173,9 @@ public class SignInActivity extends AppCompatActivity implements
             String personphotourl = "";
 
             if (personPhoto != null) {
-                //ImageView i = (ImageView) findViewById(R.id.google_icon);
+                ImageView i = (ImageView) findViewById(R.id.google_icon);
                 try {
-                    //new AsyncImageTask(i).execute(new URL(personPhoto.toString()).toString());
+                    new AsyncImageTask(i).execute(new URL(personPhoto.toString()).toString());
                     personphotourl = new URL(personPhoto.toString()).toString();
                 } catch (MalformedURLException e) {
                     Log.d("Signinactivity", "Malformed URL exception photo");

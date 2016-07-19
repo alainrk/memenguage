@@ -148,7 +148,7 @@ public class DBManager {
         Cursor crs = null;
         try {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
-            crs = db.query(Constants.TABLE_WORDS, null, null, null, null, null, null, null);
+            crs = db.query(Constants.TABLE_WORDS, null, null, null, null, null, Constants.FIELD_TIMESTAMP+" DESC");
         } catch(SQLiteException sqle) {
             return null;
         }
@@ -183,7 +183,7 @@ public class DBManager {
             String whereClause = Constants.FIELD_ITA +  " like ? or " + Constants.FIELD_ENG + " like ?";
             String[] whereArgs = {"%"+search+"%", "%"+search+"%"};
 
-            crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, null, null);
+            crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, Constants.FIELD_TIMESTAMP+" DESC", null);
             Log.d("aaaaaa","aaa");
         } catch(SQLiteException sqle) {
             return null;
