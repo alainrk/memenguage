@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".View.GuessActivity">
 
     <TextView
@@ -17,7 +13,8 @@
         android:textStyle="bold"
         android:id="@+id/doyourememberLabel"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,12 +35,30 @@
         android:layout_below="@+id/guessText"
         android:layout_centerHorizontal="true" />
 
-    <Button style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
+    <TableRow
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SHOW"
-        android:id="@+id/showbutton"
-        android:layout_marginTop="44dp"
+        android:gravity="center"
+        android:weightSum="10"
+        android:layout_marginTop="40dp"
         android:layout_below="@+id/translateText"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <Button style="@style/Widget.AppCompat.Button.Colored"
+            android:id="@+id/yesbutton"
+            android:text="Yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+ />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:id="@+id/nobutton"
+            android:text="No"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </TableRow>
+
 </RelativeLayout>

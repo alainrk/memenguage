@@ -42,7 +42,8 @@ public class GuessActivity extends AppCompatActivity {
 
     private TextView guesstext;
     private TextView translatext;
-    private Button showbutton;
+    private Button yesbutton;
+    private Button nobutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +53,13 @@ public class GuessActivity extends AppCompatActivity {
 
         guesstext = (TextView) findViewById(R.id.guessText);
         translatext = (TextView) findViewById(R.id.translateText);
-        showbutton = (Button) findViewById(R.id.showbutton);
+        yesbutton = (Button) findViewById(R.id.yesbutton);
+        nobutton = (Button) findViewById(R.id.nobutton);
 
         setTitle("Memento!");
 
         Intent i = getIntent();
-        long wordId = i.getLongExtra(Constants.EXTRA_GUESS_IDWORD, -1);
+        final long wordId = i.getLongExtra(Constants.EXTRA_GUESS_IDWORD, -1);
 
         dbmanager = new DBManager(getApplicationContext());
         crs = dbmanager.getWordByIdAndSetUsed(wordId);
@@ -80,14 +82,28 @@ public class GuessActivity extends AppCompatActivity {
 
         //Toast.makeText(getApplicationContext(), crs.getString(crs.getColumnIndex(Constants.FIELD_ENG))+ " " + crs.getString(crs.getColumnIndex(Constants.FIELD_ITA)), Toast.LENGTH_LONG).show();
 
-        showbutton.setOnClickListener(new View.OnClickListener() {
+        yesbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 translatext.setVisibility(View.VISIBLE);
-                showbutton.setEnabled(false);
+                yesbutton.setEnabled(false);
+                nobutton.setEnabled(false);
                 Intent randomStart = new Intent(GuessActivity.this, RandomIntentService.class);
                 randomStart.setAction(Constants.ACTION_RANDOM_START);
                 getApplicationContext().startService(randomStart);
+            }
+        });
+
+        nobutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                translatext.setVisibility(View.VISIBLE);
+                yesbutton.setEnabled(false);
+                nobutton.setEnabled(false);
+                Intent randomStart = new Intent(GuessActivity.this, RandomIntentService.class);
+                randomStart.setAction(Constants.ACTION_RANDOM_START);
+                getApplicationContext().startService(randomStart);
+                dbmanager.setWordNotUsed(wordId);
             }
         });
     }
