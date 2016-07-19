@@ -18,8 +18,11 @@ package alaindc.memenguage.View;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -65,8 +68,14 @@ public class GuessActivity extends AppCompatActivity {
         String guess = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ENG : Constants.FIELD_ITA) );
         String transl = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ITA : Constants.FIELD_ENG) );
 
-        guesstext.setText(guess);
-        translatext.setText(transl);
+        String itaflag = "\uDBB9\uDCE9 ";
+        String engflag = "\uDBB9\uDCEA ";
+
+        SpannableString guessstyle = new SpannableString((randomCase == Constants.ENGLISH_GUESS) ? engflag + guess : itaflag + guess);
+        SpannableString translstyle = new SpannableString((randomCase == Constants.ENGLISH_GUESS) ? itaflag + transl : engflag + transl);
+
+        guesstext.setText(guessstyle);
+        translatext.setText(translstyle);
         translatext.setVisibility(View.INVISIBLE);
 
         //Toast.makeText(getApplicationContext(), crs.getString(crs.getColumnIndex(Constants.FIELD_ENG))+ " " + crs.getString(crs.getColumnIndex(Constants.FIELD_ITA)), Toast.LENGTH_LONG).show();

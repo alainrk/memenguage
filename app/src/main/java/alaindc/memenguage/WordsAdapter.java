@@ -56,10 +56,10 @@ public class WordsAdapter extends CursorAdapter implements Filterable {
         TextView itatxt = (TextView) v.findViewById(R.id.itatxt);
         TextView engtxt = (TextView) v.findViewById(R.id.engtxt);
 
-        SpannableString itastyle = new SpannableString("IT: "+ita);
-        SpannableString engstyle = new SpannableString("EN: "+eng);
-        itastyle.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0);
-        engstyle.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0);
+        SpannableString itastyle = new SpannableString("\uDBB9\uDCE9 "+ita);
+        SpannableString engstyle = new SpannableString("\uDBB9\uDCEA "+eng);
+//        itastyle.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0);
+//        engstyle.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0);
 
         itatxt.setText(itastyle);
         itatxt.setTag("itatxt");
