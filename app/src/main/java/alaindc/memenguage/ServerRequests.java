@@ -17,8 +17,10 @@
 package alaindc.memenguage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -94,9 +96,15 @@ public class ServerRequests {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Log.d("DownloadFIle", "server contacted and has file");
-
                     boolean writtenToDisk = writeResponseBodyToDisk(file, response.body());
-                    //Log.d("DownloadFIle", "file download was a success? " + writtenToDisk);
+                    if (writtenToDisk) {
+                        Toast.makeText(context, "Database restored!", Toast.LENGTH_LONG).show();
+                        Intent updateintent = new Intent(Constants.INTENT_VIEW_UPDATE);
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(updateintent);
+
+                    }
+                    else
+                        Toast.makeText(context, "Error occurred in database restoring!", Toast.LENGTH_LONG).show();
                 } else {
                     Log.d("DownloadFIle", "server contact failed");
                 }

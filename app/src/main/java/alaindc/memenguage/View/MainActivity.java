@@ -17,16 +17,22 @@
 package alaindc.memenguage.View;
 
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -71,7 +77,7 @@ public class MainActivity extends AppCompatActivity
     private WordsAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkLoggedIn();
         setContentView(R.layout.activity_main);
@@ -106,6 +112,22 @@ public class MainActivity extends AppCompatActivity
         ImageView navlogo = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.navLogoImageView);
         TextView navtitle = (TextView)  navigationView.getHeaderView(0).findViewById(R.id.navTitle);
         TextView navsubtitle = (TextView)  navigationView.getHeaderView(0).findViewById(R.id.navSubTitle);
+
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(Constants.INTENT_VIEW_UPDATE)) {
+                    adapter.getFilter().filter("");
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Log.d("","");
+                }
+            }
+        };
+
+        IntentFilter updateviewintfilt = new IntentFilter(Constants.INTENT_VIEW_UPDATE);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, updateviewintfilt);
+
 
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE);
         personName = sharedPref.getString(Constants.PREF_GOOGLEACCOUNT_NAME, "");
@@ -175,7 +197,6 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
-
     }
 
     @Override
@@ -246,10 +267,45 @@ public class MainActivity extends AppCompatActivity
             Intent settingsActivity = new Intent(this, SettingsActivity.class);
             startActivity(settingsActivity);
         } else if (id == R.id.nav_send) {
-            ServerRequests.uploadFile(personId, this.getDatabasePath(Constants.DBNAME), this);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.MyDialogTheme);
+            builder.setTitle("Upload Database")
+                    .setMessage("Are you sure?")
+                    .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            ServerRequests.uploadFile(personId, getApplicationContext().getDatabasePath(Constants.DBNAME), getApplicationContext());
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog,int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .create()
+                    .show();
+
         } else if (id == R.id.nav_get) {
-            //Toast.makeText(getApplicationContext(), "Feature is coming soon", Toast.LENGTH_SHORT).show();
-            ServerRequests.downloadFile(personId, this.getDatabasePath(Constants.DBNAME), this);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.MyDialogTheme);
+            builder.setTitle("Download Database")
+                    .setMessage("Are you sure?")
+                    .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            ServerRequests.downloadFile(personId, getApplicationContext().getDatabasePath(Constants.DBNAME), getApplicationContext());
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog,int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .create()
+                    .show();
+
         } else if (id == R.id.nav_share) {
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");

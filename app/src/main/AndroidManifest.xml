@@ -16,7 +16,7 @@
 
         <activity
             android:name=".View.SignInActivity"
-            android:label="@string/title_activity_sign_in"
+            android:label="Memenguage"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

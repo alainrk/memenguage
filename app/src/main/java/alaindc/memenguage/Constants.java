@@ -51,9 +51,7 @@ public class Constants {
 
     public static final String SIGNIN_LOGOUT = "SIGNIN_LOGOUT";
 
-    public static final String INTENT_VIEW_DSCHANGE = "INTENT_VIEW_DSCHANGE";
-
-    public static final int TIMEOUT_RANDOM_WORDS_MILLISECONDS = 10*1000;
+    public static final String INTENT_VIEW_UPDATE = "INTENT_VIEW_UPDATE";
 
     public static final int ID_NOTIFICATION_RANDOM_WORD = 666;
 }
