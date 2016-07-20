@@ -250,11 +250,7 @@ public class MainActivity extends AppCompatActivity
             return true;
         } else if (id == R.id.action_search) {
             Log.d("MainActivity Search", item.toString());
-        } else if (id == R.id.action_play) {
-            Intent playActivity = new Intent(this, PlayActivity.class);
-            startActivity(playActivity);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -320,6 +316,9 @@ public class MainActivity extends AppCompatActivity
             Intent signinintent = new Intent(this, SignInActivity.class);
             signinintent.setAction(Constants.SIGNIN_LOGOUT);
             startActivity(signinintent);
+        } else if (id == R.id.nav_play) {
+            Intent playActivity = new Intent(this, PlayActivity.class);
+            startActivity(playActivity);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

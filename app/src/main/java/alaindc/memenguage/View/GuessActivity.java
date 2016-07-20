@@ -19,6 +19,7 @@ package alaindc.memenguage.View;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -55,6 +56,16 @@ public class GuessActivity extends AppCompatActivity {
         translatext = (TextView) findViewById(R.id.translateText);
         yesbutton = (Button) findViewById(R.id.yesbutton);
         nobutton = (Button) findViewById(R.id.nobutton);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabplay);
+        if (fab != null)
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent playactivity = new Intent(GuessActivity.this, PlayActivity.class);
+                    GuessActivity.this.startActivity(playactivity);
+                }
+            });
 
         setTitle("Memento!");
 

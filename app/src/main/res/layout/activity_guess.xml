@@ -61,4 +61,16 @@
 
     </TableRow>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabplay"
+        android:tint="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_games"
+        android:layout_marginBottom="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/doyourememberLabel"
+        android:layout_toEndOf="@+id/doyourememberLabel" />
+
 </RelativeLayout>
