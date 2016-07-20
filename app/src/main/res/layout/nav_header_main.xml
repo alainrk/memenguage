@@ -10,11 +10,12 @@
 
     <ImageView
         android:id="@+id/navLogoImageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:maxHeight="100dp"
         android:maxWidth="100dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="25dp"
         android:src="@drawable/logo"
         />
 

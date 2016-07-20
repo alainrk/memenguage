@@ -66,9 +66,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:weightSum="10"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/translateText"
-        android:layout_toEndOf="@+id/translateText">
+        android:layout_toEndOf="@+id/doyourememberLabel"
+        android:layout_toRightOf="@+id/doyourememberLabel"
+        android:layout_alignParentBottom="true">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabplay"

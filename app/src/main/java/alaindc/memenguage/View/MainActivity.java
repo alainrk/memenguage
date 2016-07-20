@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
@@ -75,6 +76,8 @@ public class MainActivity extends AppCompatActivity
     private DBManager dbmanager;
     private Cursor crs;
     private WordsAdapter adapter;
+
+    private Boolean exit = false;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -205,7 +208,20 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (exit) {
+                finish();
+            } else {
+                Toast.makeText(this, "Press Back again to Exit.", Toast.LENGTH_SHORT).show();
+                exit = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        exit = false;
+                    }
+                }, 3 * 1000);
+
+            }
+
         }
     }
 
