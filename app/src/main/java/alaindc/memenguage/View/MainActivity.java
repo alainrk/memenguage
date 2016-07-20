@@ -250,6 +250,9 @@ public class MainActivity extends AppCompatActivity
             return true;
         } else if (id == R.id.action_search) {
             Log.d("MainActivity Search", item.toString());
+        } else if (id == R.id.action_play) {
+            Intent playActivity = new Intent(this, PlayActivity.class);
+            startActivity(playActivity);
         }
 
         return super.onOptionsItemSelected(item);

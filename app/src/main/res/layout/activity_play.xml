@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.PlayActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Do you remember?"
+        android:textStyle="bold"
+        android:id="@+id/doyourememberLabelPlay"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/guessTextPlay"
+        android:layout_marginTop="34dp"
+        android:layout_below="@+id/doyourememberLabelPlay"
+        android:layout_centerHorizontal="true"
+        android:text="Guess" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/translateTextPlay"
+        android:layout_below="@+id/guessTextPlay"
+        android:layout_centerHorizontal="true" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:weightSum="10"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/translateTextPlay"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <Button style="@style/Widget.AppCompat.Button.Colored"
+            android:id="@+id/yesbuttonPlay"
+            android:text="Yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+ />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:id="@+id/nobuttonPlay"
+            android:text="No"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </TableRow>
+
+</RelativeLayout>

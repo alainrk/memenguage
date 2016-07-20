@@ -67,8 +67,7 @@ public class RandomIntentService extends IntentService {
 
         dbmanager = new DBManager(getApplicationContext());
         crs = dbmanager.getRandomWordNotUsed();
-//        int f = crs.getColumnIndex(Constants.FIELD_ID);
-//        Long i = crs.getLong(f);
+
         try {
             crs.moveToFirst();
             sendNotification(crs.getLong(crs.getColumnIndex(Constants.FIELD_ID)));

@@ -37,6 +37,12 @@
                 android:value=".View.MainActivity" />
         </activity>
 
+        <activity android:name=".View.PlayActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".View.MainActivity" />
+        </activity>
+
         <activity
             android:name=".View.SettingsActivity"
             android:label="@string/title_activity_settings" />
