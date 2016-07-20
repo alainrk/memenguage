@@ -57,7 +57,15 @@ public class PlayActivity extends AppCompatActivity {
         nextbutton = (Button) findViewById(R.id.nextbuttonPlay);
 
         setTitle("Guess these words!");
+
+        configureAll();
+
+    }
+
+    private void configureAll() {
         nextbutton.setEnabled(false);
+        yesbutton.setEnabled(true);
+        nobutton.setEnabled(true);
 
         dbmanager = new DBManager(getApplicationContext());
 
@@ -118,8 +126,9 @@ public class PlayActivity extends AppCompatActivity {
         nextbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent playActivity = new Intent(getApplicationContext(), PlayActivity.class);
-                startActivity(playActivity);
+                configureAll();
+//                Intent playActivity = new Intent(getApplicationContext(), PlayActivity.class);
+//                startActivity(playActivity);
             }
         });
     }
