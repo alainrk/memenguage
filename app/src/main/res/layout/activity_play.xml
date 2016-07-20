@@ -43,7 +43,8 @@
         android:layout_marginTop="40dp"
         android:layout_below="@+id/translateTextPlay"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:id="@+id/tableRow">
 
         <Button style="@style/Widget.AppCompat.Button.Colored"
             android:id="@+id/yesbuttonPlay"
@@ -60,5 +61,17 @@
             android:layout_height="wrap_content" />
 
     </TableRow>
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:id="@+id/nextbuttonPlay"
+        android:text="Next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tableRow"
+        android:layout_alignRight="@+id/doyourememberLabelPlay"
+        android:layout_alignEnd="@+id/doyourememberLabelPlay"
+        android:layout_alignLeft="@+id/doyourememberLabelPlay"
+        android:layout_alignStart="@+id/doyourememberLabelPlay" />
 
 </RelativeLayout>

@@ -16,6 +16,7 @@
 
 package alaindc.memenguage.View;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -41,8 +42,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private TextView guesstext;
     private TextView translatext;
-    private Button yesbutton;
-    private Button nobutton;
+    private Button yesbutton, nobutton, nextbutton;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -54,8 +54,10 @@ public class PlayActivity extends AppCompatActivity {
         translatext = (TextView) findViewById(R.id.translateTextPlay);
         yesbutton = (Button) findViewById(R.id.yesbuttonPlay);
         nobutton = (Button) findViewById(R.id.nobuttonPlay);
+        nextbutton = (Button) findViewById(R.id.nextbuttonPlay);
 
         setTitle("Guess these words!");
+        nextbutton.setEnabled(false);
 
         dbmanager = new DBManager(getApplicationContext());
 
@@ -97,7 +99,8 @@ public class PlayActivity extends AppCompatActivity {
                 translatext.setVisibility(View.VISIBLE);
                 yesbutton.setEnabled(false);
                 nobutton.setEnabled(false);
-                onCreate(savedInstanceState);
+                nextbutton.setEnabled(true);
+                dbmanager.setWordUsed(wordId);
             }
         });
 
@@ -107,8 +110,16 @@ public class PlayActivity extends AppCompatActivity {
                 translatext.setVisibility(View.VISIBLE);
                 yesbutton.setEnabled(false);
                 nobutton.setEnabled(false);
-                dbmanager.setWordNotUsed(wordId);
-                onCreate(savedInstanceState);
+                nextbutton.setEnabled(true);
+                dbmanager.setWordNotUsed(wordId); // TODO Removeme not necessary
+            }
+        });
+
+        nextbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent playActivity = new Intent(getApplicationContext(), PlayActivity.class);
+                startActivity(playActivity);
             }
         });
     }
