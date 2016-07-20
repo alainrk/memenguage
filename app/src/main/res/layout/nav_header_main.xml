@@ -10,12 +10,12 @@
 
     <ImageView
         android:id="@+id/navLogoImageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:maxHeight="80dp"
-        android:maxWidth="80dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/ic_launcher"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:maxHeight="100dp"
+        android:maxWidth="100dp"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/logo"
         />
 
     <TextView

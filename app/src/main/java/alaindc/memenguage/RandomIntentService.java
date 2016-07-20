@@ -128,10 +128,10 @@ public class RandomIntentService extends IntentService {
 
         // Define the notification settings.
 
-        builder.setSmallIcon(R.drawable.ic_launcher)
+        builder.setSmallIcon(R.drawable.icon)
                 // In a real app, you may want to use a library like Volley
                 // to decode the Bitmap.
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher))
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.logo))
                 .setColor(Color.RED)
                 .setContentTitle(title)
                 .setContentText(description)
