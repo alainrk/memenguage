@@ -71,14 +71,13 @@ public class PlayActivity extends AppCompatActivity {
 
         String guess, transl, itaflag, engflag;
 
-        if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
+        if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1){
             itaflag = "\uDBB9\uDCE9 ";
             engflag = "\uDBB9\uDCEA ";
         } else {
             itaflag = "IT: ";
             engflag = "EN: ";
         }
-
 
         crs = dbmanager.getRandomWordNotUsed();
         crs.moveToFirst();

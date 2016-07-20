@@ -19,6 +19,7 @@ package alaindc.memenguage.View;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -73,25 +74,38 @@ public class GuessActivity extends AppCompatActivity {
         final long wordId = i.getLongExtra(Constants.EXTRA_GUESS_IDWORD, -1);
 
         dbmanager = new DBManager(getApplicationContext());
+
+        String guess, transl, itaflag, engflag;
+
+        if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1){
+            itaflag = "\uDBB9\uDCE9 ";
+            engflag = "\uDBB9\uDCEA ";
+        } else {
+            itaflag = "IT: ";
+            engflag = "EN: ";
+        }
+
         crs = dbmanager.getWordByIdAndSetUsed(wordId);
         crs.moveToFirst();
 
         int randomCase = random.nextInt(2);
 
-        String guess = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ENG : Constants.FIELD_ITA) );
-        String transl = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ITA : Constants.FIELD_ENG) );
-
-        String itaflag = "\uDBB9\uDCE9 ";
-        String engflag = "\uDBB9\uDCEA ";
+        guess = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ENG : Constants.FIELD_ITA) );
+        transl = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ITA : Constants.FIELD_ENG) );
 
         SpannableString guessstyle = new SpannableString((randomCase == Constants.ENGLISH_GUESS) ? engflag + guess : itaflag + guess);
         SpannableString translstyle = new SpannableString((randomCase == Constants.ENGLISH_GUESS) ? itaflag + transl : engflag + transl);
+
+        guessstyle.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0);
+        translstyle.setSpan(new StyleSpan(Typeface.BOLD), 0, 3, 0);
 
         guesstext.setText(guessstyle);
         translatext.setText(translstyle);
         translatext.setVisibility(View.INVISIBLE);
 
-        //Toast.makeText(getApplicationContext(), crs.getString(crs.getColumnIndex(Constants.FIELD_ENG))+ " " + crs.getString(crs.getColumnIndex(Constants.FIELD_ITA)), Toast.LENGTH_LONG).show();
+        Intent randomStart = new Intent(GuessActivity.this, RandomIntentService.class);
+        randomStart.setAction(Constants.ACTION_RANDOM_START);
+        getApplicationContext().startService(randomStart);
 
         yesbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,9 +113,6 @@ public class GuessActivity extends AppCompatActivity {
                 translatext.setVisibility(View.VISIBLE);
                 yesbutton.setEnabled(false);
                 nobutton.setEnabled(false);
-                Intent randomStart = new Intent(GuessActivity.this, RandomIntentService.class);
-                randomStart.setAction(Constants.ACTION_RANDOM_START);
-                getApplicationContext().startService(randomStart);
             }
         });
 
@@ -111,9 +122,6 @@ public class GuessActivity extends AppCompatActivity {
                 translatext.setVisibility(View.VISIBLE);
                 yesbutton.setEnabled(false);
                 nobutton.setEnabled(false);
-                Intent randomStart = new Intent(GuessActivity.this, RandomIntentService.class);
-                randomStart.setAction(Constants.ACTION_RANDOM_START);
-                getApplicationContext().startService(randomStart);
                 dbmanager.setWordNotUsed(wordId);
             }
         });

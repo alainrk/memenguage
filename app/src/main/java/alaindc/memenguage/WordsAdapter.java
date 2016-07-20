@@ -60,7 +60,7 @@ public class WordsAdapter extends CursorAdapter implements Filterable {
         ita = crs.getString(crs.getColumnIndex(Constants.FIELD_ITA));
         eng = crs.getString(crs.getColumnIndex(Constants.FIELD_ENG));
 
-        if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
+        if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1){
             itastyle = new SpannableString("\uDBB9\uDCE9 "+ita);
             engstyle = new SpannableString("\uDBB9\uDCEA "+eng);
         } else {
