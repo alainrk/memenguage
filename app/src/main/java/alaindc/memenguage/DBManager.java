@@ -172,6 +172,22 @@ public class DBManager {
         return crs;
     }
 
+    public Cursor getWordById(long id) {
+        Cursor crs;
+        try {
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            String whereClause = Constants.FIELD_ID +  " = ?";
+            String[] whereArgs = {String.valueOf(id)};
+
+            crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, null, null);
+
+        } catch(SQLiteException sqle) {
+            return null;
+        }
+        return crs;
+    }
+
     public Cursor getMatchingWords(String search) {
         if (search.equals(""))
             return getAllWords();

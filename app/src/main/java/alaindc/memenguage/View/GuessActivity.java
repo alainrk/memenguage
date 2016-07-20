@@ -85,7 +85,8 @@ public class GuessActivity extends AppCompatActivity {
             engflag = "EN: ";
         }
 
-        crs = dbmanager.getWordByIdAndSetUsed(wordId);
+//        crs = dbmanager.getWordByIdAndSetUsed(wordId);
+        crs = dbmanager.getWordById(wordId);
         crs.moveToFirst();
 
         int randomCase = random.nextInt(2);
@@ -113,6 +114,7 @@ public class GuessActivity extends AppCompatActivity {
                 translatext.setVisibility(View.VISIBLE);
                 yesbutton.setEnabled(false);
                 nobutton.setEnabled(false);
+                dbmanager.setWordUsed(wordId);
             }
         });
 
