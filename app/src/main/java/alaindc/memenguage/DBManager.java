@@ -46,13 +46,75 @@ public class DBManager {
         }
     }
 
+    // Edit or insert based of existence yet or not
+    public long fillContext(long id, String text) {
+        try {
+
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+            Cursor crs;
+
+            String whereClause = Constants.FIELD_ID +  " = ?";
+            String[] whereArgs = {String.valueOf(id)};
+            crs = db.query(Constants.TABLE_CONTEXT, null, whereClause, whereArgs, null, null, null, null);
+
+            db = dbhelper.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(Constants.FIELD_ID, id);
+            cv.put(Constants.FIELD_CONTEXT, text);
+
+            long res = -1;
+
+            if (crs.getCount() == 0) {
+                res = db.insert(Constants.TABLE_CONTEXT, null, cv);
+            } else if (crs.getCount() == 1) {
+                res = db.update(Constants.TABLE_CONTEXT, cv, whereClause, whereArgs);
+            }
+
+            return res;
+
+        } catch (SQLiteException sqle) {
+            return -1;
+        }
+    }
+
+    public Cursor getContextById (long id) {
+        Cursor crs;
+        try {
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            String whereClause = Constants.FIELD_ID +  " = ?";
+            String[] whereArgs = {String.valueOf(id)};
+
+            crs = db.query(Constants.TABLE_CONTEXT, null, whereClause, whereArgs, null, null, null, null);
+
+        } catch(SQLiteException sqle) {
+            return null;
+        }
+        return crs;
+    }
+
     public int deleteWord(long id) {
         SQLiteDatabase db = dbhelper.getWritableDatabase();
         try {
-            return db.delete(Constants.TABLE_WORDS, Constants.FIELD_ID + "=?", new String[]{ Long.toString(id) });
+            if (db.delete(Constants.TABLE_WORDS, Constants.FIELD_ID + "=?", new String[]{ Long.toString(id) }) > 0)
+                return deleteContext(id);
+            return 0;
         }
         catch (SQLiteException sqle) {
             return -1;
+        }
+
+    }
+
+    public int deleteContext(long id) {
+        SQLiteDatabase db = dbhelper.getWritableDatabase();
+        try {
+            return db.delete(Constants.TABLE_CONTEXT, Constants.FIELD_ID + "=?", new String[]{ Long.toString(id) });
+        }
+        catch (SQLiteException sqle) {
+            String e = sqle.toString();
+            Log.d("FANCULO",e);
+            return 999;
         }
 
     }

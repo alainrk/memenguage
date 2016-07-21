@@ -69,6 +69,28 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:weightSum="1" >
+
+                <TextView
+                    android:layout_width="86dp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="CONTEXT"
+                    android:id="@+id/contextLabel" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/contextEditText"
+                    android:layout_weight="0.66"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingTop="5dp"
                 android:weightSum="1" >
 

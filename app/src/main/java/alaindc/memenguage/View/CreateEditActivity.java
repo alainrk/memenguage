@@ -39,6 +39,7 @@ public class CreateEditActivity extends AppCompatActivity {
 
     private EditText itaedittext;
     private EditText engedittext;
+    private EditText contextedittext;
     private Button saveButton;
     private Button deleteButton;
     private long wordId;
@@ -58,6 +59,7 @@ public class CreateEditActivity extends AppCompatActivity {
 
         itaedittext = (EditText) findViewById(R.id.itaEditText);
         engedittext = (EditText) findViewById(R.id.engEditText);
+        contextedittext = (EditText) findViewById(R.id.contextEditText);
         saveButton = (Button) findViewById(R.id.savebutton);
         deleteButton = (Button) findViewById(R.id.deletebutton);
 
@@ -77,12 +79,15 @@ public class CreateEditActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     long res = dbmanager.insertWord(itaedittext.getText().toString(), engedittext.getText().toString());
+                    if (res != -1)
+                        res = dbmanager.fillContext(res, contextedittext.getText().toString());
                     Toast t = Toast.makeText(getApplicationContext(), (res != -1) ? "Word saved!" : "Error in saving!", Toast.LENGTH_LONG);
                     t.setGravity(Gravity.TOP, 0, 20);
                     t.show();
                     if (res != -1) {
                         itaedittext.setText("");
                         engedittext.setText("");
+                        contextedittext.setText("");
                     }
                 }
             });
@@ -91,24 +96,34 @@ public class CreateEditActivity extends AppCompatActivity {
             deleteButton.setVisibility(View.VISIBLE);
             wordId = intent.getLongExtra(Constants.EXTRA_EDIT_ID, -1);
             if (wordId == -1) {
-                // TODO Handle this
+                Toast t = Toast.makeText(getApplicationContext(), "No word found!", Toast.LENGTH_LONG);
+                t.setGravity(Gravity.TOP, 0, 20);
+                t.show();
+                return;
             }
 
             itaedittext.setText(intent.getStringExtra(Constants.EXTRA_EDIT_ITA));
             engedittext.setText(intent.getStringExtra(Constants.EXTRA_EDIT_ENG));
+
+            Cursor crs = dbmanager.getContextById(wordId);
+            if (crs != null && crs.getCount() > 0){
+                crs.moveToFirst();
+                contextedittext.setText(crs.getString(crs.getColumnIndex(Constants.FIELD_CONTEXT)));
+            }
 
             itaedittext.setSelection(itaedittext.getText().length());
 
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int res = dbmanager.updateWord(wordId, itaedittext.getText().toString(), engedittext.getText().toString());
+                    long res = dbmanager.updateWord(wordId, itaedittext.getText().toString(), engedittext.getText().toString());
+                    if (res != -1)
+                        res = dbmanager.fillContext(wordId, contextedittext.getText().toString());
                     Toast t = Toast.makeText(getApplicationContext(), (res != -1) ? "Word saved!" : "Error in saving!", Toast.LENGTH_LONG);
                     t.setGravity(Gravity.TOP, 0, 20);
                     t.show();
-                    if (res != -1) {
+                    if (res > 0)
                         finish();
-                    }
                 }
             });
 

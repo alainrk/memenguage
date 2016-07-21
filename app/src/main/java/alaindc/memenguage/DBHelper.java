@@ -19,6 +19,7 @@ package alaindc.memenguage;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by narko on 03/07/16.
@@ -26,7 +27,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     public DBHelper(Context context) {
-        super(context, Constants.DBNAME, null, 1);
+        super(context, Constants.DBNAME, null, Constants.DB_VERSION);
     }
 
     @Override
@@ -39,10 +40,28 @@ public class DBHelper extends SQLiteOpenHelper {
                 Constants.FIELD_USED + " NUMERIC"
                 + ")";
         db.execSQL(q);
+
+        q = "CREATE TABLE " + Constants.TABLE_CONTEXT + " (" +
+                Constants.FIELD_ID + " INTEGER PRIMARY KEY," +
+                Constants.FIELD_CONTEXT + " TEXT"
+                + ")";
+        db.execSQL(q);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-
+        switch (oldVersion) {
+            case 1:
+                Log.d("DBHelper", "Old DB version 1");
+                String q = "CREATE TABLE " + Constants.TABLE_CONTEXT + " (" +
+                    Constants.FIELD_ID + " INTEGER PRIMARY KEY," +
+                    Constants.FIELD_CONTEXT + " TEXT"
+                    + ")";
+                db.execSQL(q);
+                break;
+            default:
+                Log.d("DBHelper", "OldVersion Unknown");
+                break;
+        }
     }
 }

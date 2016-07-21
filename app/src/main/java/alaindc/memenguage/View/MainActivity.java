@@ -200,6 +200,19 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
+
+        wordsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                crs = dbmanager.getContextById(id);
+                if (crs != null && crs.getCount() > 0) {
+                    crs.moveToFirst();
+                    Toast t = Toast.makeText(getApplicationContext(), crs.getString(crs.getColumnIndex(Constants.FIELD_CONTEXT)), Toast.LENGTH_LONG);
+                    t.setGravity(Gravity.TOP, 0, 250);
+                    t.show();
+                }
+            }
+        });
     }
 
     @Override
