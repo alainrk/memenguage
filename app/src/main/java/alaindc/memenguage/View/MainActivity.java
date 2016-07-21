@@ -207,7 +207,8 @@ public class MainActivity extends AppCompatActivity
                 crs = dbmanager.getContextById(id);
                 if (crs != null && crs.getCount() > 0) {
                     crs.moveToFirst();
-                    Toast t = Toast.makeText(getApplicationContext(), crs.getString(crs.getColumnIndex(Constants.FIELD_CONTEXT)), Toast.LENGTH_LONG);
+                    String text = crs.getString(crs.getColumnIndex(Constants.FIELD_CONTEXT));
+                    Toast t = Toast.makeText(getApplicationContext(), (text.equals("")) ? "Add a context sentence" : text, Toast.LENGTH_LONG);
                     t.setGravity(Gravity.TOP, 0, 250);
                     t.show();
                 }
