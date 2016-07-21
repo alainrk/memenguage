@@ -27,6 +27,7 @@ import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -58,11 +59,14 @@ public class PlayActivity extends AppCompatActivity {
 
         setTitle("Guess these words!");
 
-        configureAll();
+        if (configureAll() < 0) {
+            Toast.makeText(getApplicationContext(), "No words for playing! Add some first.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
     }
 
-    private void configureAll() {
+    private int configureAll() {
         nextbutton.setEnabled(false);
         yesbutton.setEnabled(true);
         nobutton.setEnabled(true);
@@ -80,6 +84,8 @@ public class PlayActivity extends AppCompatActivity {
         }
 
         crs = dbmanager.getRandomWordNotUsed();
+        if (crs.getCount() <= 0)
+            return -1;
         crs.moveToFirst();
         final Long wordId = crs.getLong(crs.getColumnIndex(Constants.FIELD_ID));
 
@@ -118,17 +124,19 @@ public class PlayActivity extends AppCompatActivity {
                 yesbutton.setEnabled(false);
                 nobutton.setEnabled(false);
                 nextbutton.setEnabled(true);
-                dbmanager.setWordNotUsed(wordId); // TODO Removeme not necessary
             }
         });
 
         nextbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                configureAll();
-//                Intent playActivity = new Intent(getApplicationContext(), PlayActivity.class);
-//                startActivity(playActivity);
+                if (configureAll() < 0) {
+                    Toast.makeText(getApplicationContext(), "No words for playing! Add some first.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
         });
+
+        return 0;
     }
 }

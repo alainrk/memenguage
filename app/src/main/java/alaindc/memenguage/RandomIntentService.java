@@ -138,6 +138,8 @@ public class RandomIntentService extends IntentService {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(notificationPendingIntent);
 
+        builder.setDefaults(0);
+
         // Dismiss notification once the user touches it.
         builder.setAutoCancel(true);
 
