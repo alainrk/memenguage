@@ -13,4 +13,19 @@
         android:entries="@array/intervals_time"
         android:entryValues="@array/intervals_time_value"
         android:defaultValue="@string/intervals_time_default" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:dependency="notifications_enabled"
+        android:key="vibrate_notifications"
+        android:title="Vibrate notifications" />
+
+    <RingtonePreference
+        android:showDefault="true"
+        android:key="sound_notifications"
+        android:title="Sound notifications"
+        android:dependency="notifications_enabled"
+        android:ringtoneType="notification" />
+
+
 </PreferenceScreen>

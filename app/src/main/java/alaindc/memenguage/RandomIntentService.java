@@ -26,6 +26,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
@@ -137,6 +138,21 @@ public class RandomIntentService extends IntentService {
                 .setContentText(description)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(notificationPendingIntent);
+
+        try {
+            String urisound = PreferenceManager.getDefaultSharedPreferences(this).getString("sound_notifications", "");
+            builder.setSound(Uri.parse(urisound));
+        } catch (Exception e) {
+            Log.d("RandomIntentService", "Uri sound notification empty or wrong");
+        }
+
+        try {
+            Boolean vibrate = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("vibrate_notifications", false);
+            if (vibrate)
+                builder.setVibrate(new long[] { 1000, 1000});
+        } catch (Exception e) {
+            Log.d("RandomIntentService", "Vibrate notification wrong");
+        }
 
         builder.setDefaults(0);
 
