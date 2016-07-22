@@ -70,10 +70,21 @@
         android:text="Next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tableRow"
+        android:layout_alignLeft="@+id/doyourememberLabelPlay"
+        android:layout_alignStart="@+id/doyourememberLabelPlay"
         android:layout_alignRight="@+id/doyourememberLabelPlay"
         android:layout_alignEnd="@+id/doyourememberLabelPlay"
-        android:layout_alignLeft="@+id/doyourememberLabelPlay"
-        android:layout_alignStart="@+id/doyourememberLabelPlay" />
+        android:layout_centerVertical="true" />
+
+    <ImageButton
+        android:id="@+id/hintButtonPlay"
+        android:src="@drawable/ic_live_help"
+        android:text="Hint"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/doyourememberLabelPlay"
+        android:layout_toRightOf="@+id/doyourememberLabelPlay"
+        android:layout_above="@+id/guessTextPlay" />
 
 </RelativeLayout>

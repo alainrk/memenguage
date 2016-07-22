@@ -24,8 +24,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,7 @@ public class PlayActivity extends AppCompatActivity {
     private TextView guesstext;
     private TextView translatext;
     private Button yesbutton, nobutton, nextbutton;
+    private ImageButton hintbutton;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class PlayActivity extends AppCompatActivity {
         yesbutton = (Button) findViewById(R.id.yesbuttonPlay);
         nobutton = (Button) findViewById(R.id.nobuttonPlay);
         nextbutton = (Button) findViewById(R.id.nextbuttonPlay);
+        hintbutton = (ImageButton) findViewById(R.id.hintButtonPlay);
 
         setTitle("Guess these words!");
 
@@ -133,6 +137,20 @@ public class PlayActivity extends AppCompatActivity {
                 if (configureAll() < 0) {
                     Toast.makeText(getApplicationContext(), "No words for playing! Add some first.", Toast.LENGTH_SHORT).show();
                     finish();
+                }
+            }
+        });
+
+        hintbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                crs = dbmanager.getContextById(wordId);
+                if (crs != null && crs.getCount() > 0) {
+                    crs.moveToFirst();
+                    String text = crs.getString(crs.getColumnIndex(Constants.FIELD_CONTEXT));
+                    Toast t = Toast.makeText(getApplicationContext(), (text.equals("")) ? "No context sentence" : text, Toast.LENGTH_LONG);
+                    t.setGravity(Gravity.TOP, 0, 250);
+                    t.show();
                 }
             }
         });

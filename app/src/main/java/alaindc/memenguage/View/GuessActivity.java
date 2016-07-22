@@ -25,9 +25,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -44,8 +47,8 @@ public class GuessActivity extends AppCompatActivity {
 
     private TextView guesstext;
     private TextView translatext;
-    private Button yesbutton;
-    private Button nobutton;
+    private Button yesbutton, nobutton;
+    private ImageButton hintbutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class GuessActivity extends AppCompatActivity {
         translatext = (TextView) findViewById(R.id.translateText);
         yesbutton = (Button) findViewById(R.id.yesbutton);
         nobutton = (Button) findViewById(R.id.nobutton);
+        hintbutton = (ImageButton) findViewById(R.id.hintButton);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabplay);
         if (fab != null)
@@ -85,7 +89,6 @@ public class GuessActivity extends AppCompatActivity {
             engflag = "EN: ";
         }
 
-//        crs = dbmanager.getWordByIdAndSetUsed(wordId);
         crs = dbmanager.getWordById(wordId);
         crs.moveToFirst();
 
@@ -125,6 +128,20 @@ public class GuessActivity extends AppCompatActivity {
                 yesbutton.setEnabled(false);
                 nobutton.setEnabled(false);
                 dbmanager.setWordNotUsed(wordId);
+            }
+        });
+
+        hintbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                crs = dbmanager.getContextById(wordId);
+                if (crs != null && crs.getCount() > 0) {
+                    crs.moveToFirst();
+                    String text = crs.getString(crs.getColumnIndex(Constants.FIELD_CONTEXT));
+                    Toast t = Toast.makeText(getApplicationContext(), (text.equals("")) ? "No context sentence" : text, Toast.LENGTH_LONG);
+                    t.setGravity(Gravity.TOP, 0, 250);
+                    t.show();
+                }
             }
         });
     }
