@@ -5,6 +5,18 @@
     android:layout_height="match_parent"
     tools:context=".View.PlayActivity">
 
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:id="@+id/nextbuttonPlay"
+        android:text="Next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tableRow"
+        android:layout_alignLeft="@+id/doyourememberLabelPlay"
+        android:layout_alignStart="@+id/doyourememberLabelPlay"
+        android:layout_alignRight="@+id/doyourememberLabelPlay"
+        android:layout_alignEnd="@+id/doyourememberLabelPlay" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,8 +64,7 @@
             android:id="@+id/yesbuttonPlay"
             android:text="Yes"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
- />
+            android:layout_height="wrap_content" />
 
         <Button
             style="@style/Widget.AppCompat.Button.Colored"
@@ -64,17 +75,6 @@
 
     </TableRow>
 
-    <Button
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:id="@+id/nextbuttonPlay"
-        android:text="Next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/doyourememberLabelPlay"
-        android:layout_alignStart="@+id/doyourememberLabelPlay"
-        android:layout_alignRight="@+id/doyourememberLabelPlay"
-        android:layout_alignEnd="@+id/doyourememberLabelPlay"
-        android:layout_centerVertical="true" />
 
     <ImageButton
         android:id="@+id/hintButtonPlay"

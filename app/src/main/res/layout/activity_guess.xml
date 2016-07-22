@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".View.GuessActivity">
 
+    <ImageButton
+        android:id="@+id/hintButton"
+        android:src="@drawable/ic_live_help"
+        android:text="Hint"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/doyourememberLabel"
+        android:layout_toRightOf="@+id/doyourememberLabel"
+        android:layout_above="@+id/guessText" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,17 +93,6 @@
             android:layout_marginBottom="40dp" />
 
     </TableRow>
-
-    <ImageButton
-        android:id="@+id/hintButton"
-        android:src="@drawable/ic_live_help"
-        android:text="Hint"
-        android:background="@null"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/doyourememberLabel"
-        android:layout_toRightOf="@+id/doyourememberLabel"
-        android:layout_above="@+id/guessText" />
 
 
 </RelativeLayout>
