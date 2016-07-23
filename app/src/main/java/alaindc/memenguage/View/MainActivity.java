@@ -214,6 +214,8 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
+        Toast.makeText(getApplicationContext(), adapter.getCount()+" words in Memenguage", Toast.LENGTH_SHORT).show();
     }
 
     @Override
