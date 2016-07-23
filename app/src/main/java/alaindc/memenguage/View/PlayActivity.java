@@ -36,6 +36,7 @@ import java.util.Random;
 import alaindc.memenguage.Constants;
 import alaindc.memenguage.DBManager;
 import alaindc.memenguage.R;
+import alaindc.memenguage.Utils;
 
 public class PlayActivity extends AppCompatActivity {
 
@@ -118,6 +119,7 @@ public class PlayActivity extends AppCompatActivity {
                 nobutton.setEnabled(false);
                 nextbutton.setEnabled(true);
                 dbmanager.setWordUsed(wordId);
+                Utils.addAttempt(getApplicationContext(), true);
             }
         });
 
@@ -128,6 +130,7 @@ public class PlayActivity extends AppCompatActivity {
                 yesbutton.setEnabled(false);
                 nobutton.setEnabled(false);
                 nextbutton.setEnabled(true);
+                Utils.addAttempt(getApplicationContext(), false);
             }
         });
 

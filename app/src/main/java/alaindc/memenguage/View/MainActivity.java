@@ -351,6 +351,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_play) {
             Intent playActivity = new Intent(this, PlayActivity.class);
             startActivity(playActivity);
+        } else if (id == R.id.nav_stats) {
+            Intent statsActivity = new Intent(this, StatsActivity.class);
+            startActivity(statsActivity);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

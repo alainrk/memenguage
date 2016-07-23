@@ -38,6 +38,7 @@ import alaindc.memenguage.Constants;
 import alaindc.memenguage.DBManager;
 import alaindc.memenguage.R;
 import alaindc.memenguage.RandomIntentService;
+import alaindc.memenguage.Utils;
 
 public class GuessActivity extends AppCompatActivity {
 
@@ -118,6 +119,7 @@ public class GuessActivity extends AppCompatActivity {
                 yesbutton.setEnabled(false);
                 nobutton.setEnabled(false);
                 dbmanager.setWordUsed(wordId);
+                Utils.addAttempt(getApplicationContext(), true);
             }
         });
 
@@ -128,6 +130,7 @@ public class GuessActivity extends AppCompatActivity {
                 yesbutton.setEnabled(false);
                 nobutton.setEnabled(false);
                 dbmanager.setWordNotUsed(wordId);
+                Utils.addAttempt(getApplicationContext(), false);
             }
         });
 
