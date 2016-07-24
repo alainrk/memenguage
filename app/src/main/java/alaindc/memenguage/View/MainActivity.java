@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -50,14 +49,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import alaindc.memenguage.AsyncImageTask;
 import alaindc.memenguage.Constants;
 import alaindc.memenguage.DBManager;
-import alaindc.memenguage.FileUploadService;
 import alaindc.memenguage.R;
 import alaindc.memenguage.RandomIntentService;
 import alaindc.memenguage.ServerRequests;
