@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,7 +56,8 @@ public class GuessActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess);
-        this.random = new Random(System.currentTimeMillis());
+
+        int randomCase;
 
         guesstext = (TextView) findViewById(R.id.guessText);
         translatext = (TextView) findViewById(R.id.translateText);
@@ -93,7 +95,18 @@ public class GuessActivity extends AppCompatActivity {
         crs = dbmanager.getWordById(wordId);
         crs.moveToFirst();
 
-        int randomCase = random.nextInt(2);
+        switch (Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("guess_mode", "0"))) {
+            case Constants.PREF_GUESS_MIXED:
+                this.random = new Random(System.currentTimeMillis());
+                randomCase = random.nextInt(2);
+                break;
+            case Constants.PREF_GUESS_ITALIAN:
+                randomCase = Constants.ITALIAN_GUESS;
+                break;
+            case Constants.PREF_GUESS_ENGLISH:
+            default:
+                randomCase = Constants.ENGLISH_GUESS;
+        }
 
         guess = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ENG : Constants.FIELD_ITA) );
         transl = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ITA : Constants.FIELD_ENG) );

@@ -37,6 +37,20 @@
         <item>1440</item>
     </string-array>
 
+    <string name="guess_default">0</string>
+
+    <string-array name="guess_pref">
+        <item>Mixed</item>
+        <item>English</item>
+        <item>Italian</item>
+    </string-array>
+
+    <string-array name="guess_pref_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <string name="title_activity_sign_in">SignInActivity</string>
 
     <string name="title_text">Memenguage</string>

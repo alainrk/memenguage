@@ -20,6 +20,7 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -93,7 +94,20 @@ public class PlayActivity extends AppCompatActivity {
         crs.moveToFirst();
         final Long wordId = crs.getLong(crs.getColumnIndex(Constants.FIELD_ID));
 
-        int randomCase = random.nextInt(2);
+        int randomCase;
+
+        switch (Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("guess_mode", "0"))) {
+            case Constants.PREF_GUESS_MIXED:
+                this.random = new Random(System.currentTimeMillis());
+                randomCase = random.nextInt(2);
+                break;
+            case Constants.PREF_GUESS_ITALIAN:
+                randomCase = Constants.ITALIAN_GUESS;
+                break;
+            case Constants.PREF_GUESS_ENGLISH:
+            default:
+                randomCase = Constants.ENGLISH_GUESS;
+        }
 
         guess = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ENG : Constants.FIELD_ITA) );
         transl = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ITA : Constants.FIELD_ENG) );

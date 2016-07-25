@@ -44,6 +44,11 @@ public class Constants {
     public static final int ENGLISH_GUESS = 0;
     public static final int ITALIAN_GUESS = 1;
 
+    public static final int PREF_GUESS_MIXED = 0;
+    public static final int PREF_GUESS_ENGLISH = 1;
+    public static final int PREF_GUESS_ITALIAN = 2;
+
+
     public static final String ACTION_ADD_WORD = "ACTION_ADD_WORD";
     public static final String ACTION_EDIT_WORD = "ACTION_EDIT_WORD";
     public static final String EXTRA_EDIT_ITA = "EXTRA_EDIT_ITA";

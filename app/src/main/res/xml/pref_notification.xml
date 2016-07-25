@@ -27,5 +27,20 @@
         android:dependency="notifications_enabled"
         android:ringtoneType="notification" />
 
+    <ListPreference
+        android:dependency="notifications_enabled"
+        android:key="interval_notifications"
+        android:title="Interval notifications"
+        android:dialogTitle="Choose an interval"
+        android:entries="@array/intervals_time"
+        android:entryValues="@array/intervals_time_value"
+        android:defaultValue="@string/intervals_time_default" />
 
+    <ListPreference
+        android:key="guess_mode"
+        android:title="Play mode"
+        android:dialogTitle="Choose a mode"
+        android:entries="@array/guess_pref"
+        android:entryValues="@array/guess_pref_value"
+        android:defaultValue="@string/guess_default" />
 </PreferenceScreen>
