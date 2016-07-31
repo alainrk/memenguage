@@ -57,7 +57,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 startdp.setText((String) newValue);
                 String starttime = startdp.getText();
                 startdp.setSummary(starttime);
-                getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE).edit().putString(Constants.PREF_STARTGUESSTIME, starttime).commit();
+                getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE).edit().putLong(Constants.PREF_STARTGUESSTIME, Utils.dateToTimestamp(starttime)).commit();
                 return true;
             }
         });
@@ -69,7 +69,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 enddp.setText((String) newValue);
                 String endtime = enddp.getText();
                 enddp.setSummary(endtime);
-                getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE).edit().putString(Constants.PREF_ENDGUESSTIME, endtime).commit();
+                getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE).edit().putLong(Constants.PREF_ENDGUESSTIME, Utils.dateToTimestamp(endtime)).commit();
                 return true;
             }
         });

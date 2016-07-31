@@ -135,6 +135,24 @@ public class DBManager {
         }
     }
 
+    public int resetAllWordsNotUsedInRangeTime(String timestart, String timeend) {
+        SQLiteDatabase db = dbhelper.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(Constants.FIELD_USED, 0);
+
+            String selection = Constants.FIELD_ID + " > ? AND " +
+                    Constants.FIELD_TIMESTAMP + " >= ? AND " +
+                    Constants.FIELD_TIMESTAMP + " <= ?";
+            String[] selectionArgs = { String.valueOf(-1), timestart, timeend };
+
+            return db.update(Constants.TABLE_WORDS, values, selection, selectionArgs);
+        }
+        catch (SQLiteException sqle) {
+            return -1;
+        }
+    }
+
     public int setWordUsed(long id) {
         SQLiteDatabase db = dbhelper.getWritableDatabase();
         try {
@@ -198,6 +216,27 @@ public class DBManager {
             crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, "random()", "1");
             if (crs.getCount() == 0) {
                 resetAllWordsNotUsed();
+                crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, "random()", "1");
+            }
+        } catch(SQLiteException sqle) {
+            return null;
+        }
+        return crs;
+    }
+
+    public Cursor getRandomWordNotUsedInRangeTime(String timestart, String timeend) {
+        Cursor crs;
+        try {
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            String whereClause = Constants.FIELD_USED +  " = ? AND " +
+                    Constants.FIELD_TIMESTAMP + " >= ? AND " +
+                    Constants.FIELD_TIMESTAMP + " <= ?";
+            String[] whereArgs = {"0", timestart, timeend};
+
+            crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, "random()", "1");
+            if (crs.getCount() == 0) {
+                resetAllWordsNotUsedInRangeTime(timestart, timeend);
                 crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, "random()", "1");
             }
         } catch(SQLiteException sqle) {

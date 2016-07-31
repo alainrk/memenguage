@@ -198,16 +198,19 @@ public class MainActivity extends AppCompatActivity
         wordsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                crs = (Cursor) arg0.getItemAtPosition(pos);
+                String text = Utils.getDate(crs.getLong(crs.getColumnIndex(Constants.FIELD_TIMESTAMP)));
+
                 crs = dbmanager.getContextById(id);
                 if (crs != null && crs.getCount() > 0) {
                     crs.moveToFirst();
-                    String text = crs.getString(crs.getColumnIndex(Constants.FIELD_CONTEXT));
-                    crs = (Cursor) arg0.getItemAtPosition(pos);
-                    text = Utils.getDate(crs.getLong(crs.getColumnIndex(Constants.FIELD_TIMESTAMP))) + "\n\n" + ((text.equals("")) ? "Add a context sentence" : text);
-                    Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
-                    t.setGravity(Gravity.TOP, 0, 250);
-                    t.show();
+                    String cont = crs.getString(crs.getColumnIndex(Constants.FIELD_CONTEXT));
+                    text = text + "\n\n" + ((cont.equals("")) ? "Add a context sentence" : cont);
                 }
+
+                Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+                t.setGravity(Gravity.TOP, 0, 250);
+                t.show();
             }
         });
 

@@ -3,6 +3,7 @@ package alaindc.memenguage;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.format.DateFormat;
+import android.util.Log;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -49,9 +50,10 @@ public class Utils {
     public static long dateToTimestamp (String datestring) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            Date date = (Date) formatter.parse(datestring);
+            java.util.Date date = formatter.parse(datestring);
             return date.getTime();
         } catch (Exception e) {
+            Log.e("Utils",e.toString());
             return System.currentTimeMillis();
         }
     }

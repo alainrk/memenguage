@@ -47,18 +47,18 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="guessall_enabled"
+            android:key="guessrange_enabled"
             android:title="Interval time guess words" />
 
         <alaindc.memenguage.DatePreference
             android:key="start_dateguess"
             android:title="Start Date"
-            android:dependency="guessall_enabled" />
+            android:dependency="guessrange_enabled" />
 
         <alaindc.memenguage.DatePreference
             android:key="end_dateguess"
             android:title="End Date"
-            android:dependency="guessall_enabled" />
+            android:dependency="guessrange_enabled" />
 
     </PreferenceCategory>
 </PreferenceScreen>

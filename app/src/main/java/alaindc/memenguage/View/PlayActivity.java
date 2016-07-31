@@ -16,6 +16,8 @@
 
 package alaindc.memenguage.View;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -48,12 +50,15 @@ public class PlayActivity extends AppCompatActivity {
     private TextView translatext;
     private Button yesbutton, nobutton, nextbutton;
     private ImageButton hintbutton;
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
         this.random = new Random(System.currentTimeMillis());
+
+        sharedPref = getApplicationContext().getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE);
 
         guesstext = (TextView) findViewById(R.id.guessTextPlay);
         translatext = (TextView) findViewById(R.id.translateTextPlay);
@@ -88,7 +93,16 @@ public class PlayActivity extends AppCompatActivity {
             engflag = "EN: ";
         }
 
-        crs = dbmanager.getRandomWordNotUsed();
+        Boolean guessrange = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("guessrange_enabled", false);
+        if (guessrange) {
+            String starttime = String.valueOf(sharedPref.getLong(Constants.PREF_STARTGUESSTIME, 0));
+            String endtime =  String.valueOf(sharedPref.getLong(Constants.PREF_ENDGUESSTIME, 999999999));
+            long c = sharedPref.getLong(Constants.PREF_STARTGUESSTIME, 0) - sharedPref.getLong(Constants.PREF_ENDGUESSTIME, 0);
+            crs = dbmanager.getRandomWordNotUsedInRangeTime(starttime, endtime);
+        } else {
+            crs = dbmanager.getRandomWordNotUsed();
+        }
+
         if (crs.getCount() <= 0)
             return -1;
         crs.moveToFirst();
@@ -151,7 +165,7 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (configureAll() < 0) {
-                    Toast.makeText(getApplicationContext(), "No words for playing! Add some first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "No words for playing! Add some first, or change interval date in Settings.", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
