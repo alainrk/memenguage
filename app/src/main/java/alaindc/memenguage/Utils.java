@@ -2,6 +2,9 @@ package alaindc.memenguage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.format.DateFormat;
+
+import java.util.Calendar;
 
 /**
  * Created by narko on 23/07/16.
@@ -24,5 +27,13 @@ public class Utils {
         editor.putLong(Constants.PREF_STATS_NUMATTEMPTS, 0);
         editor.putLong(Constants.PREF_STATS_NUMCORRECT, 0);
         editor.commit();
+    }
+
+
+    public static String getDate(long timestamp) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        String date = DateFormat.format("dd/MM/yyyy HH:mm", cal).toString();
+        return date;
     }
 }

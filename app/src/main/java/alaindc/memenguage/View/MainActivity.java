@@ -54,6 +54,7 @@ import alaindc.memenguage.DBManager;
 import alaindc.memenguage.R;
 import alaindc.memenguage.RandomIntentService;
 import alaindc.memenguage.ServerRequests;
+import alaindc.memenguage.Utils;
 import alaindc.memenguage.WordsAdapter;
 
 public class MainActivity extends AppCompatActivity
@@ -201,7 +202,9 @@ public class MainActivity extends AppCompatActivity
                 if (crs != null && crs.getCount() > 0) {
                     crs.moveToFirst();
                     String text = crs.getString(crs.getColumnIndex(Constants.FIELD_CONTEXT));
-                    Toast t = Toast.makeText(getApplicationContext(), (text.equals("")) ? "Add a context sentence" : text, Toast.LENGTH_LONG);
+                    crs = (Cursor) arg0.getItemAtPosition(pos);
+                    text = Utils.getDate(crs.getLong(crs.getColumnIndex(Constants.FIELD_TIMESTAMP))) + "\n\n" + ((text.equals("")) ? "Add a context sentence" : text);
+                    Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
                     t.setGravity(Gravity.TOP, 0, 250);
                     t.show();
                 }
