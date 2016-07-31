@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.format.DateFormat;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -36,4 +38,23 @@ public class Utils {
         String date = DateFormat.format("dd/MM/yyyy HH:mm", cal).toString();
         return date;
     }
+
+    public static String getDatePickerDate(long timestamp) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        String date = DateFormat.format("yyyy-MM-dd", cal).toString();
+        return date;
+    }
+
+    public static long dateToTimestamp (String datestring) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = (Date) formatter.parse(datestring);
+            return date.getTime();
+        } catch (Exception e) {
+            return System.currentTimeMillis();
+        }
+    }
+
+
 }

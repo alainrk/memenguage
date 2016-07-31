@@ -26,6 +26,8 @@ public class Constants {
     public static final String PREF_GOOGLEACCOUNT_EMAIL = "PREF_GOOGLEACCOUNT_EMAIL";
     public static final String PREF_GOOGLEACCOUNT_ID = "PREF_GOOGLEACCOUNT_ID";
     public static final String PREF_GOOGLEACCOUNT_PHOTOURI = "PREF_GOOGLEACCOUNT_PHOTOURI";
+    public static final String PREF_STARTGUESSTIME = "PREF_STARTGUESSTIME";
+    public static final String PREF_ENDGUESSTIME = "PREF_ENDGUESSTIME";
 
     public static final String PREF_STATS_NUMATTEMPTS = "PREF_STATS_NUMATTEMPTS";
     public static final String PREF_STATS_NUMCORRECT = "PREF_STATS_NUMCORRECT";

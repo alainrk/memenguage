@@ -16,13 +16,18 @@
 
 package alaindc.memenguage.View;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.text.format.Time;
 
 import alaindc.memenguage.Constants;
+import alaindc.memenguage.DatePreference;
 import alaindc.memenguage.R;
 import alaindc.memenguage.RandomIntentService;
+import alaindc.memenguage.Utils;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
@@ -32,6 +37,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         addPreferencesFromResource(R.xml.pref_notification);
 
         final Preference intervalpref = findPreference("interval_notifications");
+        final DatePreference startdp = (DatePreference) findPreference("start_dateguess");
+        final DatePreference enddp = (DatePreference) findPreference("end_dateguess");
 
         intervalpref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -42,5 +49,30 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+
+        startdp.setSummary(startdp.getText());
+        startdp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                startdp.setText((String) newValue);
+                String starttime = startdp.getText();
+                startdp.setSummary(starttime);
+                getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE).edit().putString(Constants.PREF_STARTGUESSTIME, starttime).commit();
+                return true;
+            }
+        });
+
+        enddp.setSummary(enddp.getText());
+        enddp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                enddp.setText((String) newValue);
+                String endtime = enddp.getText();
+                enddp.setSummary(endtime);
+                getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE).edit().putString(Constants.PREF_ENDGUESSTIME, endtime).commit();
+                return true;
+            }
+        });
+
     }
 }
