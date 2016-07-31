@@ -51,6 +51,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         });
 
         startdp.setSummary(startdp.getText());
+        startdp.setDefaultValue(startdp.getText());
         startdp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -63,6 +64,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         });
 
         enddp.setSummary(enddp.getText());
+        enddp.setDefaultValue(enddp.getText());
         enddp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {

@@ -121,10 +121,15 @@ public class DatePreference extends DialogPreference {
     }
 
     public String getText() {
-        String[] pieces = dateval.split("-");
-        String date = ((pieces[2].length() == 1 ? "0"+pieces[2] : pieces[2])) + "/" +
-                        ((pieces[1].length() == 1 ? "0"+pieces[1] : pieces[1])) + "/" +
-                        pieces[0];
+        String date;
+        try {
+            String[] pieces = dateval.split("-");
+            date = ((pieces[2].length() == 1 ? "0" + pieces[2] : pieces[2])) + "/" +
+                    ((pieces[1].length() == 1 ? "0" + pieces[1] : pieces[1])) + "/" +
+                    pieces[0];
+        } catch (Exception e) {
+            date = "2016-10-10";
+        }
         return date;
     }
 
