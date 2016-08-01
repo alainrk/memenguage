@@ -2,6 +2,7 @@ package alaindc.memenguage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.text.format.DateFormat;
 import android.util.Log;
 
@@ -36,7 +37,12 @@ public class Utils {
     public static String getDate(long timestamp) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(timestamp);
-        String date = DateFormat.format("dd/MM/yyyy HH:mm", cal).toString();
+        String date;
+        if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1){
+            date = DateFormat.format("dd/MM/yyyy HH:mm", cal).toString();
+        } else {
+            date = DateFormat.format("dd/MM/yyyy hh:mm a", cal).toString();
+        }
         return date;
     }
 
