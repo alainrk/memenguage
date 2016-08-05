@@ -156,13 +156,9 @@ public class DBManager {
     public int setWordUsed(long id) {
         SQLiteDatabase db = dbhelper.getWritableDatabase();
         try {
-            ContentValues values = new ContentValues();
-            values.put(Constants.FIELD_USED, 1);
-
-            String selection = Constants.FIELD_ID + " = ?";
-            String[] selectionArgs = { String.valueOf(id) };
-
-            return db.update(Constants.TABLE_WORDS, values, selection, selectionArgs);
+            String q = "UPDATE " + Constants.TABLE_WORDS + " SET " + Constants.FIELD_USED + " = " + Constants.FIELD_USED + " + 1 WHERE " + Constants.FIELD_ID + " = " + id;
+            db.execSQL(q);
+            return 1;
         }
         catch (SQLiteException sqle) {
             return -1;
@@ -174,22 +170,6 @@ public class DBManager {
         try {
             ContentValues values = new ContentValues();
             values.put(Constants.FIELD_RATING, rating);
-
-            String selection = Constants.FIELD_ID + " = ?";
-            String[] selectionArgs = { String.valueOf(id) };
-
-            return db.update(Constants.TABLE_WORDS, values, selection, selectionArgs);
-        }
-        catch (SQLiteException sqle) {
-            return -1;
-        }
-    }
-
-    public int setWordNotUsed(long id) {
-        SQLiteDatabase db = dbhelper.getWritableDatabase();
-        try {
-            ContentValues values = new ContentValues();
-            values.put(Constants.FIELD_USED, 0);
 
             String selection = Constants.FIELD_ID + " = ?";
             String[] selectionArgs = { String.valueOf(id) };
@@ -221,18 +201,20 @@ public class DBManager {
         }
     }
 
+    // TODO Get words with used < rating
     public Cursor getRandomWordNotUsed() {
         Cursor crs;
         try {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
 
-            String whereClause = Constants.FIELD_USED +  " = ?";
-            String[] whereArgs = {"0"};
+//            String whereClause = Constants.FIELD_USED +  " = ?";
+            String whereClause = Constants.FIELD_USED +  " < " + Constants.FIELD_RATING;
+//            String[] whereArgs = {"0"};
 
-            crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, "random()", "1");
+            crs = db.query(Constants.TABLE_WORDS, null, whereClause, null, null, null, "random()", "1");
             if (crs.getCount() == 0) {
                 resetAllWordsNotUsed();
-                crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, "random()", "1");
+                crs = db.query(Constants.TABLE_WORDS, null, whereClause, null, null, null, "random()", "1");
             }
         } catch(SQLiteException sqle) {
             return null;
@@ -240,15 +222,16 @@ public class DBManager {
         return crs;
     }
 
+    // TODO Get words with used < rating
     public Cursor getRandomWordNotUsedInRangeTime(String timestart, String timeend) {
         Cursor crs;
         try {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
 
-            String whereClause = Constants.FIELD_USED +  " = ? AND " +
+            String whereClause = Constants.FIELD_USED + " < " + Constants.FIELD_RATING + " AND " +
                     Constants.FIELD_TIMESTAMP + " >= ? AND " +
                     Constants.FIELD_TIMESTAMP + " <= ?";
-            String[] whereArgs = {"0", timestart, timeend};
+            String[] whereArgs = {timestart, timeend};
 
             crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, "random()", "1");
             if (crs.getCount() == 0) {
@@ -266,23 +249,6 @@ public class DBManager {
         try {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
             crs = db.query(Constants.TABLE_WORDS, null, null, null, null, null, Constants.FIELD_TIMESTAMP+" DESC");
-        } catch(SQLiteException sqle) {
-            return null;
-        }
-        return crs;
-    }
-
-    public Cursor getWordByIdAndSetUsed(long id) {
-        Cursor crs;
-        try {
-            SQLiteDatabase db = dbhelper.getReadableDatabase();
-
-            String whereClause = Constants.FIELD_ID +  " = ?";
-            String[] whereArgs = {String.valueOf(id)};
-
-            crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, null, null);
-            setWordUsed(id);
-
         } catch(SQLiteException sqle) {
             return null;
         }

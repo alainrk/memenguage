@@ -205,6 +205,8 @@ public class PlayActivity extends AppCompatActivity {
             }
         });
 
+        //Toast.makeText(getApplicationContext(), ""+crs.getInt(crs.getColumnIndex(Constants.FIELD_USED))+"/"+rating, Toast.LENGTH_SHORT).show();
+
         return 0;
     }
 }

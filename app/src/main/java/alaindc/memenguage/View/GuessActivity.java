@@ -66,7 +66,7 @@ public class GuessActivity extends AppCompatActivity {
         yesbutton = (Button) findViewById(R.id.yesbutton);
         nobutton = (Button) findViewById(R.id.nobutton);
         hintbutton = (ImageButton) findViewById(R.id.hintButton);
-        ratingBar = (RatingBar) findViewById(R.id.ratingBarPlay);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabplay);
 //        if (fab != null)
@@ -148,7 +148,6 @@ public class GuessActivity extends AppCompatActivity {
                 translatext.setVisibility(View.VISIBLE);
                 yesbutton.setEnabled(false);
                 nobutton.setEnabled(false);
-                dbmanager.setWordNotUsed(wordId);
                 Utils.addAttempt(getApplicationContext(), false);
             }
         });
