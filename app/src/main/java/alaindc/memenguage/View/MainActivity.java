@@ -199,13 +199,14 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long id) {
                 crs = (Cursor) arg0.getItemAtPosition(pos);
-                String text = Utils.getDate(crs.getLong(crs.getColumnIndex(Constants.FIELD_TIMESTAMP)));
+                String text = "Memory level: "+crs.getInt(crs.getColumnIndex(Constants.FIELD_RATING)) + "/5";
+                text = text + "\nLast edit: " + Utils.getDate(crs.getLong(crs.getColumnIndex(Constants.FIELD_TIMESTAMP)));
 
                 crs = dbmanager.getContextById(id);
                 if (crs != null && crs.getCount() > 0) {
                     crs.moveToFirst();
                     String cont = crs.getString(crs.getColumnIndex(Constants.FIELD_CONTEXT));
-                    text = text + "\n\n" + ((cont.equals("")) ? "Add a context sentence" : cont);
+                    text = text + "\n\n" + ((cont.equals("")) ? "Add a context sentence" : "Context:\n"+cont);
                 }
 
                 Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
