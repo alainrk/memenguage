@@ -18,7 +18,7 @@ package alaindc.memenguage;
 
 public class Constants {
     public static final String DBNAME = "memenguageDB";
-    public static final int DB_VERSION = 2;
+    public static final int DB_VERSION = 3;
 
     public static final String PREF_FILE = "memenguagesharedpreference";
     public static final String PREF_GOOGLEACCOUNT_ISLOGGED = "PREF_GOOGLEACCOUNT_ISLOGGED";
@@ -40,6 +40,7 @@ public class Constants {
     public static final String FIELD_ENG = "eng";
     public static final String FIELD_TIMESTAMP = "timestamp";
     public static final String FIELD_USED = "used";
+    public static final String FIELD_RATING = "rating";
 
     public static final String FIELD_CONTEXT = "desc";
 

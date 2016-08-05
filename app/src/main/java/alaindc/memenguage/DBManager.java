@@ -169,6 +169,22 @@ public class DBManager {
         }
     }
 
+    public int setRating(long id, int rating) {
+        SQLiteDatabase db = dbhelper.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(Constants.FIELD_RATING, rating);
+
+            String selection = Constants.FIELD_ID + " = ?";
+            String[] selectionArgs = { String.valueOf(id) };
+
+            return db.update(Constants.TABLE_WORDS, values, selection, selectionArgs);
+        }
+        catch (SQLiteException sqle) {
+            return -1;
+        }
+    }
+
     public int setWordNotUsed(long id) {
         SQLiteDatabase db = dbhelper.getWritableDatabase();
         try {

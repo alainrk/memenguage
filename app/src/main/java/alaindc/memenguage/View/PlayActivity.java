@@ -30,6 +30,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,11 +47,13 @@ public class PlayActivity extends AppCompatActivity {
     private Cursor crs;
     private Random random;
 
-    private TextView guesstext;
-    private TextView translatext;
+    private TextView guesstext, translatext;
     private Button yesbutton, nobutton, nextbutton;
     private ImageButton hintbutton;
     private SharedPreferences sharedPref;
+    private RatingBar ratingBar;
+
+    private Long wordId;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -66,6 +69,7 @@ public class PlayActivity extends AppCompatActivity {
         nobutton = (Button) findViewById(R.id.nobuttonPlay);
         nextbutton = (Button) findViewById(R.id.nextbuttonPlay);
         hintbutton = (ImageButton) findViewById(R.id.hintButtonPlay);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBarPlay);
 
         setTitle("Guess these words!");
 
@@ -77,6 +81,7 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private int configureAll() {
+
         nextbutton.setEnabled(false);
         yesbutton.setEnabled(true);
         nobutton.setEnabled(true);
@@ -84,6 +89,7 @@ public class PlayActivity extends AppCompatActivity {
         dbmanager = new DBManager(getApplicationContext());
 
         String guess, transl, itaflag, engflag;
+        int rating, randomCase;
 
         if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1){
             itaflag = "\uDBB9\uDCE9 ";
@@ -106,9 +112,7 @@ public class PlayActivity extends AppCompatActivity {
         if (crs.getCount() <= 0)
             return -1;
         crs.moveToFirst();
-        final Long wordId = crs.getLong(crs.getColumnIndex(Constants.FIELD_ID));
-
-        int randomCase;
+        wordId = crs.getLong(crs.getColumnIndex(Constants.FIELD_ID));
 
         switch (Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("guess_mode", "0"))) {
             case Constants.PREF_GUESS_MIXED:
@@ -122,6 +126,9 @@ public class PlayActivity extends AppCompatActivity {
             default:
                 randomCase = Constants.ENGLISH_GUESS;
         }
+
+        rating = crs.getInt(crs.getColumnIndex(Constants.FIELD_RATING));
+        ratingBar.setRating(rating);
 
         guess = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ENG : Constants.FIELD_ITA) );
         transl = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ITA : Constants.FIELD_ENG) );
@@ -181,6 +188,19 @@ public class PlayActivity extends AppCompatActivity {
                     Toast t = Toast.makeText(getApplicationContext(), (text.equals("")) ? "No context sentence" : text, Toast.LENGTH_LONG);
                     t.setGravity(Gravity.TOP, 0, 250);
                     t.show();
+                }
+            }
+        });
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if (fromUser) {
+                    Toast t = Toast.makeText(getApplicationContext(), "More difficult you rate your words, more chance are given to you to improve your memory about them.", Toast.LENGTH_LONG);
+                    t.setGravity(Gravity.BOTTOM, 0, 100);
+                    t.show();
+                    dbmanager = new DBManager(getApplicationContext());
+                    dbmanager.setRating(wordId, (int) rating);
                 }
             }
         });

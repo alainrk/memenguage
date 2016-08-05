@@ -37,7 +37,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 Constants.FIELD_ITA + " TEXT," +
                 Constants.FIELD_ENG + " TEXT," +
                 Constants.FIELD_TIMESTAMP + " NUMERIC," +
-                Constants.FIELD_USED + " NUMERIC"
+                Constants.FIELD_USED + " NUMERIC" +
+                Constants.FIELD_RATING + " NUMERIC DEFAULT 1"
                 + ")";
         db.execSQL(q);
 
@@ -50,13 +51,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
+        String q;
         switch (oldVersion) {
             case 1:
                 Log.d("DBHelper", "Old DB version 1");
-                String q = "CREATE TABLE " + Constants.TABLE_CONTEXT + " (" +
+                 q = "CREATE TABLE " + Constants.TABLE_CONTEXT + " (" +
                     Constants.FIELD_ID + " INTEGER PRIMARY KEY," +
                     Constants.FIELD_CONTEXT + " TEXT"
                     + ")";
+                db.execSQL(q);
+                break;
+            case 2:
+                Log.d("DBHelper", "Old DB version 2");
+                q = "ALTER TABLE " + Constants.TABLE_WORDS + " ADD COLUMN " +
+                        Constants.FIELD_RATING + " NUMERIC DEFAULT 1";
                 db.execSQL(q);
                 break;
             default:

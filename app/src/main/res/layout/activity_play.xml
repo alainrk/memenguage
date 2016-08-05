@@ -73,6 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+
     </TableRow>
 
 
@@ -86,5 +87,24 @@
         android:layout_alignTop="@+id/numwordslab"
         android:layout_toRightOf="@+id/numwordslab"
         android:layout_above="@+id/guessTextPlay" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/difflabel"
+        android:gravity="center"
+        android:text="Hard to remember?"
+        android:layout_above="@+id/ratingBarPlay"
+        android:layout_centerHorizontal="true" />
+
+    <RatingBar
+        android:id="@+id/ratingBarPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="1.0"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

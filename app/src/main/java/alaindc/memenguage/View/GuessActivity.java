@@ -30,6 +30,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,33 +48,35 @@ public class GuessActivity extends AppCompatActivity {
     private Cursor crs;
     private Random random;
 
-    private TextView guesstext;
-    private TextView translatext;
+    private TextView guesstext, translatext;
     private Button yesbutton, nobutton;
     private ImageButton hintbutton;
+    private RatingBar ratingBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess);
 
-        int randomCase;
+        int randomCase, rating;
 
         guesstext = (TextView) findViewById(R.id.guessText);
         translatext = (TextView) findViewById(R.id.translateText);
         yesbutton = (Button) findViewById(R.id.yesbutton);
         nobutton = (Button) findViewById(R.id.nobutton);
         hintbutton = (ImageButton) findViewById(R.id.hintButton);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBarPlay);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabplay);
-        if (fab != null)
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent playactivity = new Intent(GuessActivity.this, PlayActivity.class);
-                    GuessActivity.this.startActivity(playactivity);
-                }
-            });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabplay);
+//        if (fab != null)
+//            fab.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent playactivity = new Intent(GuessActivity.this, PlayActivity.class);
+//                    GuessActivity.this.startActivity(playactivity);
+//                }
+//            });
 
         setTitle("Memento!");
 
@@ -107,6 +110,9 @@ public class GuessActivity extends AppCompatActivity {
             default:
                 randomCase = Constants.ENGLISH_GUESS;
         }
+
+        rating = crs.getInt(crs.getColumnIndex(Constants.FIELD_RATING));
+        ratingBar.setRating(rating);
 
         guess = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ENG : Constants.FIELD_ITA) );
         transl = crs.getString(crs.getColumnIndex( (randomCase == Constants.ENGLISH_GUESS) ? Constants.FIELD_ITA : Constants.FIELD_ENG) );
@@ -160,5 +166,19 @@ public class GuessActivity extends AppCompatActivity {
                 }
             }
         });
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if (fromUser) {
+                    Toast t = Toast.makeText(getApplicationContext(), "More difficult you rate your words, more chance are given to you to improve your memory about them.", Toast.LENGTH_LONG);
+                    t.setGravity(Gravity.BOTTOM, 0, 100);
+                    t.show();
+                    dbmanager = new DBManager(getApplicationContext());
+                    dbmanager.setRating(wordId, (int) rating);
+                }
+            }
+        });
+
     }
 }

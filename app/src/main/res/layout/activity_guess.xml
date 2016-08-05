@@ -74,25 +74,24 @@
 
     </TableRow>
 
-    <TableRow
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/difflabel"
         android:gravity="center"
-        android:weightSum="10"
-        android:layout_toEndOf="@+id/doyourememberLabel"
-        android:layout_toRightOf="@+id/doyourememberLabel"
-        android:layout_alignParentBottom="true">
+        android:text="Hard to remember?"
+        android:layout_above="@+id/ratingBar"
+        android:layout_centerHorizontal="true" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabplay"
-            android:tint="@android:color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:src="@drawable/ic_games"
-            android:layout_marginBottom="40dp" />
-
-    </TableRow>
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="1.0"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
