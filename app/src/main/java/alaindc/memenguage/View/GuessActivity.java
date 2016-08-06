@@ -48,7 +48,7 @@ public class GuessActivity extends AppCompatActivity {
     private Cursor crs;
     private Random random;
 
-    private TextView guesstext, translatext;
+    private TextView guesstext, translatext, difflabel;
     private Button yesbutton, nobutton;
     private ImageButton hintbutton;
     private RatingBar ratingBar;
@@ -67,6 +67,16 @@ public class GuessActivity extends AppCompatActivity {
         nobutton = (Button) findViewById(R.id.nobutton);
         hintbutton = (ImageButton) findViewById(R.id.hintButton);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        difflabel = (TextView) findViewById(R.id.difflabel);
+
+        difflabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast t = Toast.makeText(getApplicationContext(), "More difficult you rate your words, more chance are given to you to improve your memory about them.", Toast.LENGTH_LONG);
+                t.setGravity(Gravity.BOTTOM, 0, 100);
+                t.show();
+            }
+        });
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabplay);
 //        if (fab != null)
@@ -170,9 +180,6 @@ public class GuessActivity extends AppCompatActivity {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 if (fromUser) {
-                    Toast t = Toast.makeText(getApplicationContext(), "More difficult you rate your words, more chance are given to you to improve your memory about them.", Toast.LENGTH_LONG);
-                    t.setGravity(Gravity.BOTTOM, 0, 100);
-                    t.show();
                     dbmanager = new DBManager(getApplicationContext());
                     dbmanager.setRating(wordId, (int) rating);
                 }

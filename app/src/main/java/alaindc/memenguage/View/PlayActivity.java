@@ -47,7 +47,7 @@ public class PlayActivity extends AppCompatActivity {
     private Cursor crs;
     private Random random;
 
-    private TextView guesstext, translatext;
+    private TextView guesstext, translatext, difflabel;
     private Button yesbutton, nobutton, nextbutton;
     private ImageButton hintbutton;
     private SharedPreferences sharedPref;
@@ -70,6 +70,16 @@ public class PlayActivity extends AppCompatActivity {
         nextbutton = (Button) findViewById(R.id.nextbuttonPlay);
         hintbutton = (ImageButton) findViewById(R.id.hintButtonPlay);
         ratingBar = (RatingBar) findViewById(R.id.ratingBarPlay);
+        difflabel = (TextView) findViewById(R.id.difflabel);
+
+        difflabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast t = Toast.makeText(getApplicationContext(), "More difficult you rate your words, more chance are given to you to improve your memory about them.", Toast.LENGTH_LONG);
+                t.setGravity(Gravity.BOTTOM, 0, 100);
+                t.show();
+            }
+        });
 
         setTitle("Guess these words!");
 
@@ -196,9 +206,6 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 if (fromUser) {
-                    Toast t = Toast.makeText(getApplicationContext(), "More difficult you rate your words, more chance are given to you to improve your memory about them.", Toast.LENGTH_LONG);
-                    t.setGravity(Gravity.BOTTOM, 0, 100);
-                    t.show();
                     dbmanager = new DBManager(getApplicationContext());
                     dbmanager.setRating(wordId, (int) rating);
                 }
