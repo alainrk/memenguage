@@ -16,6 +16,7 @@
 
 package alaindc.memenguage.View;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity
 
     private Boolean exit = false;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +112,7 @@ public class MainActivity extends AppCompatActivity
         ImageView navlogo = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.navLogoImageView);
         TextView navtitle = (TextView)  navigationView.getHeaderView(0).findViewById(R.id.navTitle);
         TextView navsubtitle = (TextView)  navigationView.getHeaderView(0).findViewById(R.id.navSubTitle);
+        progressDialog = new ProgressDialog(this);
 
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
@@ -116,14 +120,29 @@ public class MainActivity extends AppCompatActivity
                 if (intent.getAction().equals(Constants.INTENT_VIEW_UPDATE)) {
                     adapter.getFilter().filter("");
                     adapter.notifyDataSetChanged();
+                }
+                else if (intent.getAction().equals(Constants.INTENT_COMMSERV_UPDATE)) {
+                    boolean success = intent.getBooleanExtra(Constants.EXTRA_COMMSERV_SUCCESS, false);
+                    String message = (intent.getIntExtra(Constants.EXTRA_COMMSERV_TYPE, 0) == Constants.UPLOAD) ? "Databased uploaded " : "Databased downloaded ";
+                    message = (success) ? message + "successfully!" : "An error occurred, try again.";
+                    progressDialog.setMessage(message);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                        }
+                    }, 1500);
+
                 } else {
                     Log.d("","");
                 }
             }
         };
 
-        IntentFilter updateviewintfilt = new IntentFilter(Constants.INTENT_VIEW_UPDATE);
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, updateviewintfilt);
+        IntentFilter updateviewIntFilt = new IntentFilter(Constants.INTENT_VIEW_UPDATE);
+        IntentFilter serverCommIntFilt = new IntentFilter(Constants.INTENT_COMMSERV_UPDATE);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, updateviewIntFilt);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, serverCommIntFilt);
 
 
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(Constants.PREF_FILE, Context.MODE_PRIVATE);
@@ -305,6 +324,9 @@ public class MainActivity extends AppCompatActivity
                     .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
+                            progressDialog.setTitle("Upload");
+                            progressDialog.setMessage("Uploading to server... please wait");
+                            progressDialog.show();
                             ServerRequests.uploadFile(personId, getApplicationContext().getDatabasePath(Constants.DBNAME), getApplicationContext());
                         }
                     })
@@ -325,6 +347,9 @@ public class MainActivity extends AppCompatActivity
                     .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
+                            progressDialog.setTitle("Download");
+                            progressDialog.setMessage("Downloading from server... please wait");
+                            progressDialog.show();
                             ServerRequests.downloadFile(personId, getApplicationContext().getDatabasePath(Constants.DBNAME), getApplicationContext());
                         }
                     })

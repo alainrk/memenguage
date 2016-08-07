@@ -47,6 +47,9 @@ public class Constants {
     public static final int ENGLISH_GUESS = 0;
     public static final int ITALIAN_GUESS = 1;
 
+    public static final int UPLOAD = 0;
+    public static final int DOWNLOAD = 1;
+
     public static final int PREF_GUESS_MIXED = 0;
     public static final int PREF_GUESS_ENGLISH = 1;
     public static final int PREF_GUESS_ITALIAN = 2;
@@ -63,10 +66,13 @@ public class Constants {
 
     public static final String ACTION_GUESS_ACTIVITY = "ACTION_GUESS_ACTIVITY";
     public static final String EXTRA_GUESS_IDWORD = "EXTRA_GUESS_IDWORD";
+    public static final String EXTRA_COMMSERV_TYPE = "EXTRA_COMMSERV_TYPE";
+    public static final String EXTRA_COMMSERV_SUCCESS = "EXTRA_COMMSERV_SUCCESS";
 
     public static final String SIGNIN_LOGOUT = "SIGNIN_LOGOUT";
 
     public static final String INTENT_VIEW_UPDATE = "INTENT_VIEW_UPDATE";
+    public static final String INTENT_COMMSERV_UPDATE = "INTENT_COMMSERV_UPDATE";
 
     public static final int ID_NOTIFICATION_RANDOM_WORD = 666;
 }

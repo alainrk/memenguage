@@ -16,8 +16,10 @@
 
 package alaindc.memenguage;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -62,18 +64,26 @@ public class ServerRequests {
 
         // finally, execute the request
         Call<ResponseBody> call = service.upload(id, body);
+
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call,
-                                   Response<ResponseBody> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Intent commservint = new Intent(Constants.INTENT_COMMSERV_UPDATE);
+                commservint.putExtra(Constants.EXTRA_COMMSERV_TYPE, Constants.UPLOAD);
                 try {
                     String res = response.body().string().replace("\"","");
-                    if (res.equals(userid))
-                        Toast.makeText(context, "Database uploaded!", Toast.LENGTH_LONG).show();
+                    if (res.equals(userid) && response.isSuccessful()) {
+                        commservint.putExtra(Constants.EXTRA_COMMSERV_SUCCESS, true);
+                    }
+                    else {
+                        commservint.putExtra(Constants.EXTRA_COMMSERV_SUCCESS, false);
+                    }
                     Log.v("Upload", "success");
                 } catch (Exception e) {
-
+                    commservint.putExtra(Constants.EXTRA_COMMSERV_SUCCESS, false);
                 }
+
+                LocalBroadcastManager.getInstance(context).sendBroadcast(commservint);
             }
 
             @Override
@@ -91,20 +101,26 @@ public class ServerRequests {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Intent commservint = new Intent(Constants.INTENT_COMMSERV_UPDATE);
+                commservint.putExtra(Constants.EXTRA_COMMSERV_TYPE, Constants.DOWNLOAD);
+
                 if (response.isSuccessful()) {
                     Log.d("DownloadFIle", "server contacted and has file");
                     boolean writtenToDisk = writeResponseBodyToDisk(file, response.body());
                     if (writtenToDisk) {
-                        Toast.makeText(context, "Database restored!", Toast.LENGTH_LONG).show();
+                        commservint.putExtra(Constants.EXTRA_COMMSERV_SUCCESS, true);
                         Intent updateintent = new Intent(Constants.INTENT_VIEW_UPDATE);
                         LocalBroadcastManager.getInstance(context).sendBroadcast(updateintent);
 
                     }
-                    else
-                        Toast.makeText(context, "Error occurred in database restoring!", Toast.LENGTH_LONG).show();
+                    else {
+                        commservint.putExtra(Constants.EXTRA_COMMSERV_SUCCESS, false);
+                    }
                 } else {
+                    commservint.putExtra(Constants.EXTRA_COMMSERV_SUCCESS, false);
                     Log.d("DownloadFIle", "server contact failed");
                 }
+                LocalBroadcastManager.getInstance(context).sendBroadcast(commservint);
             }
 
             @Override
