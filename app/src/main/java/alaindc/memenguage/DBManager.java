@@ -300,7 +300,7 @@ public class DBManager {
     public long countGuessedWords () {
         SQLiteDatabase db = dbhelper.getWritableDatabase();
         try {
-            return DatabaseUtils.queryNumEntries(db, Constants.TABLE_WORDS, Constants.FIELD_USED +  " < " + Constants.FIELD_RATING, null);
+            return DatabaseUtils.queryNumEntries(db, Constants.TABLE_WORDS, Constants.FIELD_USED +  " >= " + Constants.FIELD_RATING, null);
         }
         catch (SQLiteException sqle) {
             return 0;
