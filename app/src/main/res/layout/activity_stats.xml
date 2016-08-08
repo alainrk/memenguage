@@ -5,51 +5,24 @@
     android:layout_height="match_parent"
     tools:context=".View.PlayActivity">
 
-    <TextView
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Words played: "
-        android:textStyle="bold"
-        android:id="@+id/numwordslab"
-        android:layout_marginTop="30dp"
-        android:layout_alignParentTop="true"
+        android:id="@+id/listatsview"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="35dp"
-        android:layout_marginStart="35dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Words guessed: "
-        android:textStyle="bold"
-        android:id="@+id/numguesslab"
-        android:layout_below="@+id/numwordslab"
-        android:layout_alignLeft="@+id/numwordslab"
-        android:layout_alignStart="@+id/numwordslab" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Success: "
-        android:textStyle="bold"
-        android:id="@+id/successlab"
-        android:layout_below="@+id/numguesslab"
-        android:layout_alignLeft="@+id/numguesslab"
-        android:layout_alignStart="@+id/numguesslab" />
+        android:layout_alignParentTop="true"
+        android:foregroundGravity="top"
+        />
 
     <Button
         style="@style/Widget.AppCompat.Button.Colored"
-        android:id="@+id/clearStatBut"
+        android:id="@+id/clearstatsbut"
         android:text="Clear Stats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/successlab"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

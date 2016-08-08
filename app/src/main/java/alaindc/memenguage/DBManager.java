@@ -19,6 +19,7 @@ package alaindc.memenguage;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
@@ -201,15 +202,12 @@ public class DBManager {
         }
     }
 
-    // TODO Get words with used < rating
     public Cursor getRandomWordNotUsed() {
         Cursor crs;
         try {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
 
-//            String whereClause = Constants.FIELD_USED +  " = ?";
             String whereClause = Constants.FIELD_USED +  " < " + Constants.FIELD_RATING;
-//            String[] whereArgs = {"0"};
 
             crs = db.query(Constants.TABLE_WORDS, null, whereClause, null, null, null, "random()", "1");
             if (crs.getCount() == 0) {
@@ -222,7 +220,6 @@ public class DBManager {
         return crs;
     }
 
-    // TODO Get words with used < rating
     public Cursor getRandomWordNotUsedInRangeTime(String timestart, String timeend) {
         Cursor crs;
         try {
@@ -283,10 +280,30 @@ public class DBManager {
             String[] whereArgs = {"%"+search+"%", "%"+search+"%"};
 
             crs = db.query(Constants.TABLE_WORDS, null, whereClause, whereArgs, null, null, Constants.FIELD_TIMESTAMP+" DESC", null);
-            Log.d("aaaaaa","aaa");
+
         } catch(SQLiteException sqle) {
             return null;
         }
         return crs;
+    }
+
+    public long countWords () {
+        SQLiteDatabase db = dbhelper.getWritableDatabase();
+        try {
+            return DatabaseUtils.queryNumEntries(db, Constants.TABLE_WORDS, null, null);
+        }
+        catch (SQLiteException sqle) {
+            return 0;
+        }
+    }
+
+    public long countGuessedWords () {
+        SQLiteDatabase db = dbhelper.getWritableDatabase();
+        try {
+            return DatabaseUtils.queryNumEntries(db, Constants.TABLE_WORDS, Constants.FIELD_USED +  " < " + Constants.FIELD_RATING, null);
+        }
+        catch (SQLiteException sqle) {
+            return 0;
+        }
     }
 }
