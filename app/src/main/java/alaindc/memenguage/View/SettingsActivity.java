@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.text.format.Time;
+import android.view.MenuItem;
 
 import alaindc.memenguage.Constants;
 import alaindc.memenguage.DatePreference;
@@ -76,5 +77,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
